@@ -2,8 +2,6 @@ services:
   - type: web
     name: policylens-backend
     env: python
-    runtime: python3
     rootDir: backend
-    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
