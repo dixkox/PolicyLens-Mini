@@ -4,17 +4,23 @@ import os
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 def ask_gemini(question: str, text: str) -> str:
-    prompt = f"""
-    You are an AI policy assistant.
-    Here is the policy text:
+try:
+prompt = f"""
+You are an AI policy assistant.
 
-    {text}
+Here is the policy text:
 
-    Question: {question}
+{text}
 
-    Provide a clear, concise answer.
-    """
+Question: {question}
 
-    model = genai.GenerativeModel("gemini-1.5-pro")
-    response = model.generate_content(prompt)
-    return response.text
+Provide a clear, concise answer.
+"""
+
+model = genai.GenerativeModel("gemini-1.5-pro")
+response = model.generate_content(prompt)
+
+return response.text
+
+except Exception as e:
+return f"ERROR: {str(e)}"
