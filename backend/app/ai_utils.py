@@ -7,7 +7,10 @@ client = InferenceClient(
 
 def ask_gemini(question: str, text: str) -> str:
     try:
-        prompt = f"""
+        messages = [
+            {
+                "role": "user",
+                "content": f"""
 Policy text:
 
 {text}
@@ -17,14 +20,16 @@ Question:
 
 Answer clearly and concisely.
 """
+            }
+        ]
 
-        response = client.text_generation(
-            prompt,
-            model="mistralai/Mistral-7B-Instruct-v0.2",
-            max_new_tokens=200
+        response = client.chat_completion(
+            messages=messages,
+            model="meta-llama/Meta-Llama-3-8B-Instruct",
+            max_tokens=200,
         )
 
-        return response
+        return response.choices[0].message.content
 
     except Exception as e:
         return f"ERROR: {str(e)}"
