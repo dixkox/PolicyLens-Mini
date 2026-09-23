@@ -25,7 +25,7 @@ Answer clearly and concisely.
 
         response = client.chat_completion(
             messages=messages,
-            model="meta-llama/Meta-Llama-3-8B-Instruct",
+            model="HuggingFaceH4/zephyr-7b-beta",
             max_tokens=200,
         )
 
