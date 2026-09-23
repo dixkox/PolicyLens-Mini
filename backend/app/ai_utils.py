@@ -1,26 +1,30 @@
 import os
-import google.generativeai as genai
+from huggingface_hub import InferenceClient
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+client = InferenceClient(
+    token=os.getenv("HF_TOKEN")
+)
 
 def ask_gemini(question: str, text: str) -> str:
     try:
         prompt = f"""
-You are an AI policy assistant.
-
-Here is the policy text:
+Policy text:
 
 {text}
 
-Question: {question}
+Question:
+{question}
 
-Provide a clear, concise answer.
+Answer clearly and concisely.
 """
 
-        model = genai.GenerativeModel("gemini-1.5-pro")
-        response = model.generate_content(prompt)
+        response = client.text_generation(
+            prompt,
+            model="mistralai/Mistral-7B-Instruct-v0.2",
+            max_new_tokens=200
+        )
 
-        return response.text
+        return response
 
     except Exception as e:
         return f"ERROR: {str(e)}"
