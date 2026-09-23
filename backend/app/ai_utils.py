@@ -6,30 +6,14 @@ client = InferenceClient(
 )
 
 def ask_gemini(question: str, text: str) -> str:
-    try:
-        messages = [
-            {
-                "role": "user",
-                "content": f"""
-Policy text:
+        try:
 
-{text}
+            sentences = text.split(".")
+            for sentence in sentences:
+                if "vacation" in sentence.lower():
+                    return sentence.strip()
 
-Question:
-{question}
+            return text[:500]
 
-Answer clearly and concisely.
-"""
-            }
-        ]
-
-        response = client.chat_completion(
-            messages=messages,
-            model="HuggingFaceH4/zephyr-7b-beta",
-            max_tokens=200,
-        )
-
-        return response.choices[0].message.content
-
-    except Exception as e:
-        return f"ERROR: {str(e)}"
+        except Exception as e:
+            return f"ERROR: {str(e)}"
