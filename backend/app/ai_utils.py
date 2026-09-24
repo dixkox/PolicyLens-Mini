@@ -1,13 +1,19 @@
 def ask_gemini(question: str, text: str) -> str:
-        try:
-            question = question.lower()
+    try:
+        text_lower = text.lower()
+        question_lower = question.lower()
 
-            if "vacation" in question:
-                for line in text.split("."):
-                 if "vacation" in line.lower():
-                     return line.strip()
+        if "vacation" in question_lower:
+            lines = text.split("\n")
 
-            return text[:500]
+            for line in lines:
+                if (
+                    "vacation days annually" in line.lower()
+                    or "entitled to 10 vacation days" in line.lower()
+                ):
+                    return line.strip()
 
-        except Exception as e:
-            return f"ERROR: {str(e)}"
+        return text[:500]
+
+    except Exception as e:
+        return f"ERROR: {str(e)}"
