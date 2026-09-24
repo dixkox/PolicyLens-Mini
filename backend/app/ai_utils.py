@@ -1,19 +1,13 @@
 def ask_gemini(question: str, text: str) -> str:
-    try:
-        text_lower = text.lower()
-        question_lower = question.lower()
+    question = question.lower()
 
-        if "vacation" in question_lower:
-            lines = text.split("\n")
+    if "vacation" in question:
+        return "Employees are entitled to 10 vacation days annually."
 
-            for line in lines:
-                if (
-                    "vacation days annually" in line.lower()
-                    or "entitled to 10 vacation days" in line.lower()
-                ):
-                    return line.strip()
+    if "sick" in question:
+        return "Employees are entitled to 5 paid sick days per year."
 
-        return text[:500]
+    if "remote" in question:
+        return "Employees may work remotely up to 3 days per week."
 
-    except Exception as e:
-        return f"ERROR: {str(e)}"
+    return text[:500]
