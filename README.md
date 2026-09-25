@@ -1,597 +1,439 @@
-# Policy RAG Application — Quantic AI Engineering Project
-
-## 📌 Project Overview
-The Policy‑RAG‑App is a lightweight Retrieval‑Augmented Generation (RAG) system that answers questions about company policies using a fully deterministic classical NLP pipeline. It fulfills all core requirements of the Quantic AI Engineering Project, including ingestion, indexing, retrieval, evaluation, documentation, and reproducibility.
-
-The system includes:
-
-- TF‑IDF vectorization (scikit‑learn)
-- Cosine similarity retrieval
-- Heading‑based chunking
-- FastAPI backend
-- Simple HTML frontend
-- Guardrails for invalid questions
-- Citations (file + section heading)
-- Full evaluation across 16 policies
-
-This project is designed for clarity, reproducibility, and ease of debugging.
-
+# PolicyLens-Mini
+ 
+## MSSE Capstone Project
+ 
+**PolicyLens-Mini** is a lightweight policy analysis web application developed for the Quantic Master of Science in Software Engineering Capstone Project.
+ 
+The application allows users to upload a PDF policy document and ask natural-language questions about its contents. The backend extracts the document text and uses deterministic text retrieval to identify relevant policy information while applying a similarity threshold to reject questions that are not sufficiently supported by the document.
+ 
 ---
-
-## 📁 Repository Structure
-
-policy-rag-app/
-│
-├── app/
-│   ├── main.py                 # FastAPI backend
-│   ├── rag_pipeline.py         # TF-IDF ingestion, indexing, retrieval
-│
-├── data/
-│   ├── policies/               # Policy .txt files (used by RAG)
-│   └── raw/                    # Markdown versions of policies
-│
-├── scripts/
-│   └── generate_policies.py    # Auto-generates missing .txt and .md policies
-│
-├── frontend/
-│   └── index.html              # Simple UI
-│
-├── evaluation/
-│   └── evaluation_set.md       # 50 evaluation questions + results
-│
-├── requirements.txt
-├── README.md
-├── design-and-evaluation.md
-├── ai-tooling.md
-└── .gitignore
-
-Code
-
+ 
+## Project Objectives
+ 
+PolicyLens-Mini was designed to demonstrate:
+ 
+- Full-stack software engineering
+- Document ingestion and PDF text extraction
+- Natural-language information retrieval
+- Deterministic retrieval and relevance scoring
+- Guardrails for unsupported questions
+- REST API development
+- Frontend-backend integration
+- Automated testing and evaluation
+- Git-based version control
+- CI/CD practices
+- Cloud deployment
+- Agile software development
+ 
 ---
-
-## 📚 Policy Dataset (16 Policies)
-
-The system includes a complete set of **16 company policies**, stored in both `.txt` and `.md` formats:
-
-- PTO Policy  
-- Remote Work Policy  
-- Holiday Policy  
-- Expense Policy  
-- Parental Leave Policy  
-- Code of Conduct  
-- Security Policy  
-- Travel Policy  
-- IT Usage Policy  
-- Anti‑Harassment Policy  
-- Attendance Policy  
-- Benefits Policy  
-- Reimbursement Policy  
-- Data Protection Policy  
-- HR General Policy  
-- Workplace Behavior Policy  
-
-### Automatic Policy Generation
-Missing policies can be generated automatically:
-
-python scripts/generate_policies.py
-
-Code
-
-This script creates both `.txt` (used by RAG) and `.md` (human‑readable) versions.
-
----
-
-## ⚙️ Setup Instructions
-
-### 1. Clone the repository
-git clone https://github.com/dixkox/policy-rag-app.git
-cd policy-rag-app
-
-Code
-
-### 2. Create a virtual environment
-python -m venv venv
-venv\Scripts\activate         # Windows
-source venv/bin/activate      # macOS/Linux
-
-Code
-
-### 3. Install dependencies
-pip install -r requirements.txt
-
-Code
-
-### 4. Ensure policy documents exist
-Place `.txt` files inside:
-
-data/policies/
-
-Code
-
-Each file must contain a heading like:
-
-PTO Policy
-Code of Conduct
-Security Policy
-Code
-
-Or generate all missing policies automatically:
-
-python scripts/generate_policies.py
-
-Code
-
----
-
-## 🚀 Running the Application
-
-### Start the FastAPI backend
-uvicorn app.main:app --reload
-
-Code
-
-Backend will be available at:
-
-http://127.0.0.1:8000
-
-Code
-
----
-
-## 🌐 Start the Frontend (port 5500)
-
-### Option 1 — VS Code Live Server (recommended)
-- Open the project in VS Code  
-- Navigate to `frontend/index.html`  
-- Right‑click → **Open with Live Server**  
-
-Your browser will open:
-
-http://localhost:5500/
-
-Code
-
-### Option 2 — Python static server
-cd frontend
-python -m http.server 5500
-
-Code
-
-Open:
-
-http://localhost:5500/
-
-Code
-
----
-
-## 🔌 API Usage
-
-### POST /ask
-Request:
+ 
+## Core Features
+ 
+### PDF Policy Upload
+ 
+Users can upload PDF policy documents. The FastAPI backend extracts the document text for subsequent analysis.
+ 
+### Policy Question Answering
+ 
+Users can ask questions about an uploaded policy document through the `/ask` API.
+ 
+### Deterministic Retrieval
+ 
+The current retrieval pipeline performs text normalization, tokenization, TF-IDF-style weighting and similarity scoring using a deterministic implementation.
+ 
+This design provides:
+ 
+- Reproducible results
+- No external LLM dependency for core retrieval
+- Low operating cost
+- Explainable similarity scores
+- Reduced risk of unsupported generated answers
+ 
+### Relevance Guardrail
+ 
+Retrieved results include a relevance assessment so the application can distinguish supported questions from questions that do not sufficiently match the supplied policy.
+ 
+Example response:
+ 
 ```json
 {
-  "question": "What is the PTO policy?"
+"answer": "Employees are entitled to 10 vacation days annually.",
+"score": 0.559,
+"matched": true
 }
-Response:
-
-json
-{
-  "answer": "Here is the relevant policy information...",
-  "context": "# PTO Policy\nEmployees accrue PTO...",
-  "reason": "Similarity score = 0.312",
-  "citation": {
-    "file": "pto_policy.txt",
-    "section": "PTO Policy"
-  }
-}
+```
+ 
+### REST API
+ 
+The backend exposes endpoints including:
+ 
+```text
+POST /upload
+POST /ask
 GET /health
-Code
-http://127.0.0.1:8000/health
-Response:
-
-json
-{ "status": "ok" }
-🧠 RAG Pipeline Summary
-Ingestion
-Loads .txt files → splits by headings → cleans text.
-
-Indexing
-TF‑IDF vectorizer → sparse matrix stored in memory.
-
-Retrieval
-Query → TF‑IDF → cosine similarity → best chunk selected.
-
-Guardrails
-If similarity < 0.25 → return “Invalid question”.
-
-Answer Generation
-Returns:
-
-Retrieved context
-
-Similarity score
-
-Citation (file + section)
-
-🧪 Evaluation
-Full evaluation is documented in:
-
+```
+ 
+Interactive API documentation is available through FastAPI's API documentation interface when the backend is running.
+ 
+---
+ 
+## Technology Stack
+ 
+### Backend
+ 
+- Python
+- FastAPI
+- Uvicorn
+- PyPDF
+- Python Multipart
+ 
+### Frontend
+ 
+- Next.js
+- React
+- TypeScript
+- CSS
+ 
+### Engineering and Deployment
+ 
+- Git
+- GitHub
+- GitHub Actions
+- Render
+- Automated evaluation
+- Agile development practices
+ 
+---
+ 
+## Repository Structure
+ 
+```text
+PolicyLens-Mini/
+│
+├── backend/
+│ ├── app/
+│ │ ├── main.py
+│ │ ├── routes.py
+│ │ ├── retrieval.py
+│ │ ├── pdf_utils.py
+│ │ └── ai_utils.py
+│ ├── requirements.txt
+│ ├── render.yaml
+│ └── runtime.txt
+│
+├── frontend/
+│ ├── app/
+│ │ ├── page.tsx
+│ │ ├── layout.tsx
+│ │ └── globals.css
+│ ├── public/
+│ ├── package.json
+│ └── next.config.ts
+│
+├── architecture/
+│ └── architecture_diagram.png
+│
+├── evaluation/
+│ ├── eval_results.json
+│ ├── evaluation.md
+│ └── evaluation_summary.md
+│
+├── demo/
+│ ├── screenshots/
+│ ├── demo_script.md
+│ └── demo_steps.md
+│
+├── data/
+│ ├── policies/
+│ └── raw/
+│
+├── scripts/
+│ └── generate_policies.py
+│
+├── design-and-evaluation.md
+├── ai-tooling.md
+└── README.md
+```
+ 
+---
+ 
+# Architecture
+ 
+PolicyLens-Mini follows a separated frontend/backend web architecture.
+ 
+```text
+User
+|
+v
+Next.js Frontend
+|
+| HTTP
+v
+FastAPI Backend
+|
++--> PDF Extraction
+|
++--> Text Processing
+|
++--> Deterministic Retrieval
+|
++--> Similarity Scoring
+|
++--> Match Guardrail
+|
+v
+Grounded Policy Answer
+```
+ 
+The separation of concerns keeps the user interface, API layer, document processing and retrieval logic independently maintainable.
+ 
+Additional architecture material is available in:
+ 
+```text
+architecture/architecture_diagram.png
 design-and-evaluation.md
-
-evaluation/evaluation_set.md
-
-Includes:
-
-Groundedness
-
-Relevance
-
-Correctness
-
-Citation accuracy
-
-Latency (p50/p95)
-
-50‑question evaluation set across 16 policies
-
-🛠️ AI Tools Used
-Documented in:
-
+```
+ 
+---
+ 
+# Local Development
+ 
+## Clone the Repository
+ 
+```powershell
+git clone https://github.com/dixkox/PolicyLens-Mini.git
+cd PolicyLens-Mini
+```
+ 
+## Backend
+ 
+Create and activate a Python virtual environment and install the backend dependencies.
+ 
+```powershell
+cd backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+ 
+Start FastAPI:
+ 
+```powershell
+python -m uvicorn app.main:app --reload
+```
+ 
+Backend:
+ 
+```text
+http://127.0.0.1:8000
+```
+ 
+API documentation:
+ 
+```text
+http://127.0.0.1:8000/docs
+```
+ 
+## Frontend
+ 
+Open another terminal:
+ 
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+ 
+Frontend:
+ 
+```text
+http://localhost:3000
+```
+ 
+---
+ 
+# Testing and Evaluation
+ 
+PolicyLens-Mini is tested at multiple levels, including:
+ 
+- Retrieval behaviour
+- Relevant policy questions
+- Unsupported questions
+- Similarity scoring
+- Guardrail behaviour
+- API health
+- PDF processing
+- Frontend-backend integration
+- Production behaviour
+ 
+Evaluation artifacts are maintained under:
+ 
+```text
+evaluation/
+```
+ 
+Detailed testing and engineering decisions are documented in:
+ 
+```text
+design-and-evaluation.md
+```
+ 
+---
+ 
+# CI/CD
+ 
+The project uses Git and GitHub for source control and incorporates automated CI/CD practices.
+ 
+The CI workflow is stored in:
+ 
+```text
+.github/workflows/
+```
+ 
+The application is also configured for cloud deployment.
+ 
+---
+ 
+# Deployment
+ 
+PolicyLens-Mini is designed to operate as a deployed web application in addition to local development.
+ 
+**Production application:**
+Add final deployed frontend URL here.
+ 
+**Production backend:**
+Add final Render backend URL here.
+ 
+The final deployed URLs will remain linked from this repository for Capstone evaluation.
+ 
+---
+ 
+# Agile Engineering
+ 
+PolicyLens-Mini was developed iteratively using agile engineering practices.
+ 
+The Capstone development record includes:
+ 
+- Product backlog
+- User stories
+- Sprint planning
+- At least three development sprints
+- Implementation tasks
+- Testing activities
+- Sprint completion evidence
+- Deployment activities
+ 
+**Agile Task Board:**
+Add final accessible task-board URL here.
+ 
+---
+ 
+# Design and Testing Documentation
+ 
+The Capstone design and testing documentation covers:
+ 
+- System architecture
+- Major engineering decisions
+- Technology choices and rationale
+- Software and architectural patterns
+- Retrieval architecture
+- Testing strategy
+- Automated and manual testing
+- Evaluation results
+- Deployment strategy
+- Hosting considerations
+- Cost considerations
+- Limitations and future improvements
+ 
+See:
+ 
+```text
+design-and-evaluation.md
+```
+ 
+---
+ 
+# AI-Assisted Engineering
+ 
+AI development tools were used to support activities including debugging, architecture reasoning, code development, documentation and engineering analysis.
+ 
+Usage is documented in:
+ 
+```text
 ai-tooling.md
-
-Tools include:
-
-Microsoft Copilot
-
-Cursor IDE
-
-Gemini 1.5 Pro
-
-🎥 Demo Video Requirements
-Your 5–10 minute demo must show:
-
-App running
-
-Architecture explanation
-
-Evaluation results
-
-Your ID
-
-All group members present
-
-✔️ Submission Checklist
-[x] RAG pipeline implemented
-
-[x] TF‑IDF ingestion + indexing
-
-[x] Retrieval + guardrails
-
-[x] FastAPI backend
-
-[x] 16‑policy dataset
-
-[x] Automatic policy generation script
-
-[x] Citations added
-
-[x] Clean GitHub repo
-
-[x] README.md updated
-
-[x] design-and-evaluation.md updated
-
-[x] ai-tooling.md updated
-
-[x] Evaluation set (50 questions)
-
-[x] CI/CD workflow
-
-[ ] Demo video (final step)
-
-[ ] Optional deployment
-
-## Final Submission Write‑Up
-
-Policy‑RAG‑App  
-
-(Quantic MSSE AI Engineering Project) 
-
-Name – Tinubu Damilola 
-
-Demo Video Share Link - 27.08.2026_07.53.38_REC 
-
-Google Drive Link - https://drive.google.com/drive/folders/1mcUa6uRahipogZRuYv27NYqDSH0mDMpC?usp=sharing 
-
-Github Link - https://github.com/dixkox/policy-rag-app/tree/master 
-
- 
-
-1. Project Overview 
-
-The Policy‑RAG‑App is a fully functional Retrieval Augmented Generation (RAG) system designed to answer questions about company policies using a deterministic, zero‑cost architecture. The system uses TF‑IDF vectorization, cosine similarity retrieval, heading‑based chunking, and strict guardrails to ensure grounded, accurate, and reproducible answers. 
-
-The project includes: 
-
-A FastAPI backend 
-
-A simple HTML/JS frontend 
-
-A 16‑policy synthetic dataset 
-
-A deterministic RAG pipeline 
-
-A 50‑question evaluation set 
-
-Full documentation (README, design‑and‑evaluation, AI tooling) 
-
-A demo video showing the system running locally 
-
-Deployment is optional and not required for grading; therefore, the system runs locally for the demonstration no deployment 
-
-2. Architecture Summary 
-
- 
-
-The system follows a classical RAG pipeline: 
-
-Ingestion 
-
-Loads .txt policy files from data/policies/ 
-
-Splits documents into chunks using section headings (# Heading) 
-
-Cleans and normalizes text 
-
-Indexing 
-
-Builds a TF‑IDF sparse matrix using scikit‑learn 
-
-Stores vectors in memory for fast lookup 
-
-Retrieval 
-
-Converts user query into TF‑IDF vector 
-
-Computes cosine similarity against all policy chunks 
-
-Selects the highest‑scoring chunk 
-
-Guardrails 
-
-If similarity score < 0.25, the system rejects the question 
-
-Prevents hallucinations and ensures grounded answers 
-
-Answer Generation 
-
-Returns: 
-
-The retrieved policy chunk 
-
-A similarity score 
-
-A citation (filename + section heading) 
-
-Frontend 
-
-Simple HTML interface 
-
-Sends POST requests to /ask 
-
-Displays answer, context, and citation 
-
-3. Policy Dataset (16 Policies) 
-
-The system includes a complete synthetic policy corpus: 
-
-PTO Policy 
-
-Remote Work Policy 
-
-Holiday Policy 
-
-Expense Policy 
-
-Parental Leave Policy 
-
-Code of Conduct 
-
-Security Policy 
-
-Travel Policy 
-
-IT Usage Policy 
-
-Anti‑Harassment Policy 
-
-Attendance Policy 
-
-Benefits Policy 
-
-Reimbursement Policy 
-
-Data Protection Policy 
-
-HR General Policy 
-
-Workplace Behavior Policy 
-
-Each policy exists in: 
-
-.txt format for ingestion 
-
-.md format for human readability 
-
-A script (generate_policies.py) automatically generates missing policies. 
-
-4. Evaluation Summary (50 Questions) 
-
-Metrics Evaluated 
-
-Groundedness 
-
-Relevance 
-
-Correctness 
-
-Citation Accuracy 
-
-Latency (p50/p95) 
-
-Results 
-
-Metric 
-
-Score 
-
-Groundedness 
-
-88% 
-
-Relevance 
-
-86% 
-
-Correctness 
-
-90% 
-
-Citation Accuracy 
-
-90% 
-
-Latency p50 
-
-~720 ms 
-
-Latency p95 
-
-~1380 ms 
-
- 
-
- 
-
-Observations 
-
-TF‑IDF performs strongly for structured policy text 
-
-Guardrails prevent hallucinations effectively 
-
-Latency is well within acceptable limits 
-
-Errors mainly occur with ambiguous or multi‑policy questions 
-
-5. AI Tooling Usage 
-
-AI tools were used responsibly to accelerate development: 
-
-Microsoft Copilot 
-
-Debugging FastAPI 
-
-Improving documentation 
-
-Refining RAG logic 
-
-Cursor IDE 
-
-Project scaffolding 
-
-Code refactoring 
-
-Automated fixes 
-
-Gemini 1.5 Pro 
-
-Architecture reasoning 
-
-Policy text generation 
-
-Evaluation question generation 
-
-Copilot Chat 
-
-Debugging 
-
-Repo cleanup 
-
-Error explanations 
-
-All engineering decisions, integration, and evaluation were performed manually. No copyrighted or proprietary policy documents were used. 
-
- 
-
-6. Demo Video Summary 
-
-The demo video shows: 
-
-My face + ID 
-
-The FastAPI backend running locally 
-
-The frontend answering policy questions 
-
-Guardrails rejecting invalid questions 
-
-Retrieval with citations 
-
-Architecture explanation 
-
-Evaluation results 
-
-GitHub repository walkthrough 
-
-This satisfies all Quantic demo requirements. 
-
-7. GitHub Repository 
-
-Full source code is available at: 
-
-https://github.com/dixkox/policy-rag-app (Maste Default) 
-
-The repository includes: 
-
-Backend 
-
-Frontend 
-
-16‑policy dataset 
-
-Evaluation set 
-
-Documentation 
-
-Policy generation script 
-
-Everything is reproducible and runs locally without deployment. 
-
-8. Conclusion 
-
-The Policy‑RAG‑App meets all Quantic AI Engineering Project requirements: 
-
-Deterministic RAG pipeline 
-
-TF‑IDF ingestion + indexing 
-
-Cosine similarity retrieval 
-
-Guardrails 
-
-FastAPI backend 
-
-Frontend UI 
-
-16‑policy dataset 
-
-50‑question evaluation 
-
-Full documentation 
-
-Demo video 
-
-The system is lightweight, reproducible, academically honest, and fully functional. 
-
- 
+```
+ 
+Engineering decisions, integration, validation and final project responsibility remain with the project author.
+ 
+---
+ 
+# Capstone Demonstration
+ 
+The final Quantic demonstration will show the deployed PolicyLens-Mini system operating across multiple representative user inputs, including:
+ 
+1. Application overview
+2. PDF policy upload
+3. Successful policy question
+4. Retrieval result
+5. Similarity score
+6. Unsupported-question guardrail
+7. Architecture
+8. Testing and evaluation
+9. GitHub repository
+10. CI/CD and deployment
+11. Agile development evidence
+ 
+The final Capstone recording will follow the required **15 to 20 minute** presentation duration.
+ 
+---
+ 
+# Capstone Deliverables
+ 
+- [x] GitHub repository
+- [x] Backend implementation
+- [x] Frontend implementation
+- [x] PDF document processing
+- [x] Policy question answering
+- [x] Deterministic retrieval
+- [x] Similarity scoring
+- [x] Unsupported-question guardrail
+- [x] Architecture artifacts
+- [x] Evaluation artifacts
+- [x] Git version control
+- [x] CI/CD artifacts
+- [ ] Final deployed URLs verified
+- [ ] Agile task board finalized
+- [ ] Design and testing document final audit
+- [ ] Quantic grader repository access verified
+- [ ] Final 15–20 minute demonstration recorded
+- [ ] Final submission links verified
+ 
+---
+ 
+# Repository
+ 
+GitHub:
+ 
+https://github.com/dixkox/PolicyLens-Mini
+ 
+---
+ 
+## Author
+ 
+**Tinubu Damilola**
+Master of Science in Software Engineering
+Quantic School of Business and Technology
+ 
+---
+ 
+## Academic Integrity
+ 
+PolicyLens-Mini was developed as an academic software engineering project. External tools, libraries and AI-assisted development tools used during development are documented where appropriate.
+ 
+Synthetic policy data is used for demonstration and evaluation purposes.
+ 
+---
+ 
+## License
+ 
+See the applicable repository license files for licensing information.
