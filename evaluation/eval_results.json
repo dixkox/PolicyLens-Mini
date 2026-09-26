@@ -1,212 +1,238 @@
-[
-  {
-    "question": "What is the main objective of the PTO policy?",
-    "context": "# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.",
-    "answer": "provide employees with paid time away from work",
-    "latency_ms": 3152.3494720458984,
-    "measured_latency_ms": 21384.685516357422
+{
+  "system": "PolicyLens-Mini",
+  "summary": {
+    "total_cases": 20,
+    "correct_cases": 20,
+    "incorrect_cases": 0,
+    "accuracy_percent": 100.0,
+    "latency_ms": {
+      "mean": 15.759,
+      "median": 15.379,
+      "p95": 29.784,
+      "minimum": 4.345,
+      "maximum": 30.294
+    }
   },
-  {
-    "question": "How many PTO days are employees entitled to per year?",
-    "context": "# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.",
-    "answer": "40",
-    "latency_ms": 591.8233394622803,
-    "measured_latency_ms": 596.3270664215088
-  },
-  {
-    "question": "How should employees request PTO?",
-    "context": "# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.",
-    "answer": "through the HR portal",
-    "latency_ms": 737.0738983154297,
-    "measured_latency_ms": 741.0774230957031
-  },
-  {
-    "question": "Does unused PTO roll over to the next year?",
-    "context": "# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.",
-    "answer": "Yes",
-    "latency_ms": 528.8677215576172,
-    "measured_latency_ms": 532.8717231750488
-  },
-  {
-    "question": "What happens if an employee takes unauthorized leave?",
-    "context": "# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.",
-    "answer": "roll over up to 40 hours per year",
-    "latency_ms": 962.8133773803711,
-    "measured_latency_ms": 968.3442115783691
-  },
-  {
-    "question": "What are employees required to do to maintain information security?",
-    "context": "# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures",
-    "latency_ms": 1457.763433456421,
-    "measured_latency_ms": 1460.7651233673096
-  },
-  {
-    "question": "What should employees do if they notice suspicious activity?",
-    "context": "# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "report suspicious activity",
-    "latency_ms": 631.5433979034424,
-    "measured_latency_ms": 636.0628604888916
-  },
-  {
-    "question": "What are the core hours employees must be available during remote work?",
-    "context": "# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.",
-    "answer": "during core hours",
-    "latency_ms": 789.5982265472412,
-    "measured_latency_ms": 794.5966720581055
-  },
-  {
-    "question": "What cybersecurity guidelines must remote employees follow?",
-    "context": "# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "# Remote Work Policy",
-    "latency_ms": 865.3295040130615,
-    "measured_latency_ms": 869.8551654815674
-  },
-  {
-    "question": "What should employees do to ensure a professional remote work environment?",
-    "context": "# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "maintain availability during core hours",
-    "latency_ms": 887.2990608215332,
-    "measured_latency_ms": 890.7463550567627
-  },
-  {
-    "question": "What is the main objective of the Information Security Policy?",
-    "context": "# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "to protect company data, systems, and infrastructure from unauthorized access or misuse",
-    "latency_ms": 1372.8058338165283,
-    "measured_latency_ms": 1375.8149147033691
-  },
-  {
-    "question": "What is the main objective of the Remote Work Policy?",
-    "context": "# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "define expectations for employees working remotely",
-    "latency_ms": 872.3585605621338,
-    "measured_latency_ms": 877.3694038391113
-  },
-  {
-    "question": "What is the main objective of the Code of Conduct?",
-    "context": "# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "establish ethical standards and professional behavior guidelines for all employees",
-    "latency_ms": 1094.2792892456055,
-    "measured_latency_ms": 1098.2997417449951
-  },
-  {
-    "question": "How often do employees accrue PTO?",
-    "context": "# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.",
-    "answer": "monthly",
-    "latency_ms": 593.3401584625244,
-    "measured_latency_ms": 597.337007522583
-  },
-  {
-    "question": "Where should employees report suspicious activity?",
-    "context": "# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "Information Security Policy",
-    "latency_ms": 668.4248447418213,
-    "measured_latency_ms": 673.5012531280518
-  },
-  {
-    "question": "What type of passwords must employees use?",
-    "context": "# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "strong passwords",
-    "latency_ms": 707.9281806945801,
-    "measured_latency_ms": 711.9448184967041
-  },
-  {
-    "question": "What is MFA and why must employees enable it?",
-    "context": "# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "Information Security Policy",
-    "latency_ms": 633.131742477417,
-    "measured_latency_ms": 638.1425857543945
-  },
-  {
-    "question": "What should employees avoid to prevent conflicts of interest?",
-    "context": "# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "a).",
-    "latency_ms": 693.3131217956543,
-    "measured_latency_ms": 702.8491497039795
-  },
-  {
-    "question": "How should employees behave to maintain integrity?",
-    "context": "# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "respectfully",
-    "latency_ms": 676.3246059417725,
-    "measured_latency_ms": 680.3264617919922
-  },
-  {
-    "question": "What happens if employees fail to follow data handling procedures?",
-    "context": "# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "unauthorized access or misuse",
-    "latency_ms": 773.1113433837891,
-    "measured_latency_ms": 777.1236896514893
-  },
-  {
-    "question": "What must employees do to comply with laws?",
-    "context": "# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "comply with laws",
-    "latency_ms": 638.6799812316895,
-    "measured_latency_ms": 642.6823139190674
-  },
-  {
-    "question": "What are employees expected to do during core hours?",
-    "context": "# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.",
-    "answer": "maintain availability",
-    "latency_ms": 585.3011608123779,
-    "measured_latency_ms": 589.299201965332
-  },
-  {
-    "question": "How should employees maintain availability while working remotely?",
-    "context": "# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.",
-    "answer": "during core hours",
-    "latency_ms": 640.333890914917,
-    "measured_latency_ms": 643.3322429656982
-  },
-  {
-    "question": "What should employees do to follow cybersecurity guidelines?",
-    "context": "# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "maintain availability during core hours",
-    "latency_ms": 751.7602443695068,
-    "measured_latency_ms": 756.293535232544
-  },
-  {
-    "question": "How many PTO hours can roll over each year?",
-    "context": "# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.",
-    "answer": "40",
-    "latency_ms": 530.4417610168457,
-    "measured_latency_ms": 534.4445705413818
-  },
-  {
-    "question": "Where do employees request time off?",
-    "context": "# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.",
-    "answer": "HR portal",
-    "latency_ms": 544.5766448974609,
-    "measured_latency_ms": 549.0570068359375
-  },
-  {
-    "question": "What ensures work-life balance for employees?",
-    "context": "# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.",
-    "answer": "Paid Time Off (PTO) Policy",
-    "latency_ms": 967.4880504608154,
-    "measured_latency_ms": 972.5136756896973
-  },
-  {
-    "question": "What protects company data and systems?",
-    "context": "# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "Information Security Policy",
-    "latency_ms": 853.5714149475098,
-    "measured_latency_ms": 858.1135272979736
-  },
-  {
-    "question": "What defines expectations for remote employees?",
-    "context": "# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "Remote Work Policy",
-    "latency_ms": 649.9166488647461,
-    "measured_latency_ms": 653.9320945739746
-  },
-  {
-    "question": "What establishes ethical standards for employees?",
-    "context": "# Code of Conduct\n\nThe objective of this policy is to establish ethical standards and professional behavior guidelines for all employees.\n\nEmployees must act respectfully, avoid conflicts of interest, comply with laws, and maintain integrity in all business activities.\n\n# Remote Work Policy\n\nThe objective of this policy is to define expectations for employees working remotely. It ensures productivity, security, and clear communication standards.\n\nEmployees must maintain availability during core hours, follow cybersecurity guidelines, and ensure a professional work environment.\n\n# Information Security Policy\n\nThe objective of this policy is to protect company data, systems, and infrastructure from unauthorized access or misuse.\n\nEmployees must use strong passwords, enable MFA, report suspicious activity, and follow data handling procedures.\n\n# Paid Time Off (PTO) Policy\n\nThe objective of this policy is to provide employees with paid time away from work for rest, personal matters, or illness. PTO ensures work-life balance and supports employee well-being.\n\nEmployees accrue PTO monthly and may request time off through the HR portal. Unused PTO may roll over up to 40 hours per year.",
-    "answer": "Code of Conduct",
-    "latency_ms": 612.6246452331543,
-    "measured_latency_ms": 616.1277294158936
-  }
-]
+  "results": [
+    {
+      "policy": "pto_policy.md",
+      "question": "How fast do employees accrue PTO?",
+      "expected_answer": "1.5 days per month",
+      "should_match": true,
+      "answer": "Employees accrue PTO at a rate of 1.5 days per month.",
+      "score": 0.447,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 10.368
+    },
+    {
+      "policy": "pto_policy.md",
+      "question": "What can PTO be used for?",
+      "expected_answer": "vacation, personal time, or illness",
+      "should_match": true,
+      "answer": "PTO may be used for vacation, personal time, or illness.",
+      "score": 0.264,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 18.509
+    },
+    {
+      "policy": "pto_policy.md",
+      "question": "How far in advance must PTO longer than 3 consecutive days be requested?",
+      "expected_answer": "at least 2 weeks in advance",
+      "should_match": true,
+      "answer": "Requests for PTO longer than 3 consecutive days must be submitted at least 2 weeks in advance.",
+      "score": 0.565,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 4.443
+    },
+    {
+      "policy": "pto_policy.md",
+      "question": "How much unused PTO can roll over?",
+      "expected_answer": "up to 5 days per calendar year",
+      "should_match": true,
+      "answer": "Unused PTO rolls over up to 5 days per calendar year.",
+      "score": 0.279,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 26.602
+    },
+    {
+      "policy": "pto_policy.md",
+      "question": "Is unused PTO paid out when employment ends?",
+      "expected_answer": null,
+      "should_match": false,
+      "answer": "No relevant policy information was found.",
+      "score": 0.15,
+      "matched": false,
+      "correct": true,
+      "measured_latency_ms": 29.758
+    },
+    {
+      "policy": "security_policy.md",
+      "question": "How often must employees complete security training?",
+      "expected_answer": "annually",
+      "should_match": true,
+      "answer": "All employees must complete annual security training.",
+      "score": 0.641,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 16.414
+    },
+    {
+      "policy": "security_policy.md",
+      "question": "How often must passwords be changed?",
+      "expected_answer": "every 90 days",
+      "should_match": true,
+      "answer": "Passwords must be changed every 90 days and meet complexity requirements.",
+      "score": 0.35,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 15.483
+    },
+    {
+      "policy": "security_policy.md",
+      "question": "Where must confidential data not be stored?",
+      "expected_answer": "on personal devices",
+      "should_match": true,
+      "answer": "Confidential data must not be stored on personal devices.",
+      "score": 0.765,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 14.827
+    },
+    {
+      "policy": "security_policy.md",
+      "question": "How quickly must security incidents be reported?",
+      "expected_answer": "within 24 hours",
+      "should_match": true,
+      "answer": "Security incidents must be reported within 24 hours.",
+      "score": 0.514,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 5.493
+    },
+    {
+      "policy": "security_policy.md",
+      "question": "What antivirus software must employees install?",
+      "expected_answer": null,
+      "should_match": false,
+      "answer": "No relevant policy information was found.",
+      "score": 0.19,
+      "matched": false,
+      "correct": true,
+      "measured_latency_ms": 6.914
+    },
+    {
+      "policy": "remote_work_policy.md",
+      "question": "How many days per week may employees work remotely?",
+      "expected_answer": "up to 3 days per week",
+      "should_match": true,
+      "answer": "Employees may work remotely up to 3 days per week with manager approval.",
+      "score": 0.561,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 30.294
+    },
+    {
+      "policy": "remote_work_policy.md",
+      "question": "Whose approval is required for remote work?",
+      "expected_answer": "manager approval",
+      "should_match": true,
+      "answer": "Employees may work remotely up to 3 days per week with manager approval.",
+      "score": 0.354,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 5.372
+    },
+    {
+      "policy": "remote_work_policy.md",
+      "question": "During what hours must remote employees be available online?",
+      "expected_answer": "between 9 AM and 3 PM EST",
+      "should_match": true,
+      "answer": "All remote employees must be available online between 9 AM and 3 PM EST.",
+      "score": 0.438,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 24.807
+    },
+    {
+      "policy": "remote_work_policy.md",
+      "question": "What equipment must be used for remote work?",
+      "expected_answer": "company equipment",
+      "should_match": true,
+      "answer": "Company equipment must be used for all remote work activities.",
+      "score": 0.59,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 15.753
+    },
+    {
+      "policy": "remote_work_policy.md",
+      "question": "Must employees keep their webcam on during meetings?",
+      "expected_answer": null,
+      "should_match": false,
+      "answer": "No relevant policy information was found.",
+      "score": 0.119,
+      "matched": false,
+      "correct": true,
+      "measured_latency_ms": 14.985
+    },
+    {
+      "policy": "code_of_conduct.md",
+      "question": "How are employees expected to treat colleagues?",
+      "expected_answer": "respect colleagues",
+      "should_match": true,
+      "answer": "Employees are expected to maintain professionalism, respect colleagues, and avoid conflicts of interest.",
+      "score": 0.311,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 14.6
+    },
+    {
+      "policy": "code_of_conduct.md",
+      "question": "What must employees avoid?",
+      "expected_answer": "conflicts of interest",
+      "should_match": true,
+      "answer": "Employees are expected to maintain professionalism, respect colleagues, and avoid conflicts of interest.",
+      "score": 0.489,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 15.569
+    },
+    {
+      "policy": "code_of_conduct.md",
+      "question": "What conduct is strictly prohibited?",
+      "expected_answer": "harassment or discrimination",
+      "should_match": true,
+      "answer": "Harassment or discrimination of any kind is strictly prohibited.",
+      "score": 0.376,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 4.345
+    },
+    {
+      "policy": "code_of_conduct.md",
+      "question": "What outside activities must employees disclose?",
+      "expected_answer": "external employment or consulting activities",
+      "should_match": true,
+      "answer": "Employees must disclose any external employment or consulting activities.",
+      "score": 0.815,
+      "matched": true,
+      "correct": true,
+      "measured_latency_ms": 25.365
+    },
+    {
+      "policy": "code_of_conduct.md",
+      "question": "What disciplinary action is taken for violating the code?",
+      "expected_answer": null,
+      "should_match": false,
+      "answer": "No relevant policy information was found.",
+      "score": 0.0,
+      "matched": false,
+      "correct": true,
+      "measured_latency_ms": 15.276
+    }
+  ]
+}

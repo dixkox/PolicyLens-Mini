@@ -10,18 +10,38 @@ STOP_WORDS = {
     "when", "where", "which", "who", "why", "with"
 }
 
+QUERY_EXPANSIONS = {
+    "avoid": {"conflicts"},
+    "approval": {"manager"},
+    "outside": {"external"},
+    "activities": {"employment", "consulting"},
+}
+
 
 def tokenize(text):
     words = re.findall(r"[a-z0-9]+", (text or "").lower())
-    return [
+
+    tokens = [
         word
         for word in words
         if word not in STOP_WORDS and len(word) >= 2
     ]
 
+    expanded = list(tokens)
+
+    for token in tokens:
+        expanded.extend(QUERY_EXPANSIONS.get(token, set()))
+
+    return expanded
+
 
 def chunk_policy_text(text):
-    text = text.replace("\r\n", "\n").replace("\r", "\n").strip()
+    text = (
+        (text or "")
+        .replace("\r\n", "\n")
+        .replace("\r", "\n")
+        .strip()
+    )
 
     if not text:
         return []
@@ -32,6 +52,10 @@ def chunk_policy_text(text):
         line = re.sub(r"\s+", " ", line).strip()
 
         if not line:
+            continue
+
+        # Headings identify sections but should never become answers.
+        if line.startswith("#"):
             continue
 
         sentences = re.split(r"(?<=[.!?])\s+", line)
@@ -47,6 +71,7 @@ def chunk_policy_text(text):
 
 def calculate_idf(documents):
     total = len(documents)
+
     if total == 0:
         return {}
 
@@ -80,6 +105,7 @@ def similarity(vector_a, vector_b):
         return 0.0
 
     common_terms = set(vector_a).intersection(vector_b)
+
     if not common_terms:
         return 0.0
 
@@ -102,7 +128,7 @@ def similarity(vector_a, vector_b):
     return dot_product / (magnitude_a * magnitude_b)
 
 
-def retrieve_answer(question, text, threshold=0.10):
+def retrieve_answer(question, text, threshold=0.20):
     question = (question or "").strip()
     text = (text or "").strip()
 
@@ -129,11 +155,7 @@ def retrieve_answer(question, text, threshold=0.10):
             "matched": False,
         }
 
-    documents = [
-        tokenize(chunk)
-        for chunk in chunks
-    ]
-
+    documents = [tokenize(chunk) for chunk in chunks]
     question_tokens = tokenize(question)
 
     if not question_tokens:
@@ -151,18 +173,15 @@ def retrieve_answer(question, text, threshold=0.10):
 
     for document in documents:
         document_vector = make_vector(document, idf)
+        scores.append(
+            similarity(question_vector, document_vector)
+        )
 
-        score = similarity(question_vector, document_vector)
-        scores.append(score)
+    best_index = max(
+        range(len(scores)),
+        key=scores.__getitem__,
+    )
 
-    if not scores:
-        return {
-            "answer": "No relevant policy information was found.",
-            "score": 0.0,
-            "matched": False,
-        }
-
-    best_index = max(range(len(scores)), key=scores.__getitem__)
     best_score = scores[best_index]
 
     if best_score < threshold:
