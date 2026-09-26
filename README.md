@@ -4,22 +4,27 @@
  
 **PolicyLens-Mini** is a lightweight policy analysis web application developed for the Quantic Master of Science in Software Engineering Capstone Project.
  
-The application allows users to upload a PDF policy document and ask natural-language questions about its contents. The backend extracts the document text and uses deterministic text retrieval to identify relevant policy information while applying a similarity threshold to reject questions that are not sufficiently supported by the document.
+The application allows users to upload a PDF policy document and ask natural-language questions about its contents.
+ 
+PolicyLens-Mini uses deterministic lexical retrieval, TF-IDF-style weighting, cosine similarity, and a relevance guardrail to retrieve supporting policy information or reject questions when sufficient evidence is not available.
  
 ---
  
 ## Project Objectives
  
-PolicyLens-Mini was designed to demonstrate:
+PolicyLens-Mini demonstrates:
  
 - Full-stack software engineering
-- Document ingestion and PDF text extraction
-- Natural-language information retrieval
-- Deterministic retrieval and relevance scoring
-- Guardrails for unsupported questions
+- PDF document ingestion
+- Text extraction
+- Natural-language policy retrieval
+- Deterministic retrieval
+- TF-IDF-style weighting
+- Cosine similarity scoring
+- Unsupported-question guardrails
 - REST API development
 - Frontend-backend integration
-- Automated testing and evaluation
+- Automated evaluation
 - Git-based version control
 - CI/CD practices
 - Cloud deployment
@@ -31,53 +36,88 @@ PolicyLens-Mini was designed to demonstrate:
  
 ### PDF Policy Upload
  
-Users can upload PDF policy documents. The FastAPI backend extracts the document text for subsequent analysis.
+Users can upload PDF policy documents.
+ 
+The FastAPI backend extracts the document text and makes it available for policy questioning.
  
 ### Policy Question Answering
  
-Users can ask questions about an uploaded policy document through the `/ask` API.
+Users can ask natural-language questions about the uploaded policy.
+ 
+The backend retrieves the policy sentence with the strongest lexical similarity to the question.
  
 ### Deterministic Retrieval
  
-The current retrieval pipeline performs text normalization, tokenization, TF-IDF-style weighting and similarity scoring using a deterministic implementation.
+The retrieval pipeline performs:
  
-This design provides:
+```text
+Policy Text
+|
+Sentence Chunking
+|
+Tokenization
+|
+TF-IDF Weighting
+|
+Cosine Similarity
+|
+Best Candidate
+|
+Relevance Guardrail
+|
+Answer or Rejection
+```
+ 
+This approach provides:
  
 - Reproducible results
+- Transparent scoring
+- Lightweight execution
 - No external LLM dependency for core retrieval
-- Low operating cost
-- Explainable similarity scores
-- Reduced risk of unsupported generated answers
+- Easier debugging and evaluation
  
 ### Relevance Guardrail
  
-Retrieved results include a relevance assessment so the application can distinguish supported questions from questions that do not sufficiently match the supplied policy.
+PolicyLens-Mini applies a relevance threshold of:
  
-Example response:
+```text
+0.20
+```
+ 
+If sufficient supporting information is found:
  
 ```json
 {
-"answer": "Employees are entitled to 10 vacation days annually.",
-"score": 0.559,
+"answer": "Employees accrue PTO at a rate of 1.5 days per month.",
+"score": 0.446,
 "matched": true
 }
 ```
  
-### REST API
+If sufficient evidence is not found:
  
-The backend exposes endpoints including:
- 
-```text
-POST /upload
-POST /ask
-GET /health
+```json
+{
+"answer": "No relevant policy information was found.",
+"score": 0.0,
+"matched": false
+}
 ```
  
-Interactive API documentation is available through FastAPI's API documentation interface when the backend is running.
+Markdown headings are excluded from answer candidates.
+ 
+The retrieval system also uses limited deterministic query expansion to reduce selected vocabulary mismatches.
  
 ---
  
 ## Technology Stack
+ 
+### Frontend
+ 
+- Next.js
+- React
+- TypeScript
+- CSS
  
 ### Backend
  
@@ -87,12 +127,14 @@ Interactive API documentation is available through FastAPI's API documentation i
 - PyPDF
 - Python Multipart
  
-### Frontend
+### Retrieval
  
-- Next.js
-- React
-- TypeScript
-- CSS
+- Sentence-level chunking
+- Tokenization
+- TF-IDF-style weighting
+- Cosine similarity
+- Deterministic query expansion
+- Relevance guardrail
  
 ### Engineering and Deployment
  
@@ -105,61 +147,64 @@ Interactive API documentation is available through FastAPI's API documentation i
  
 ---
  
-## Repository Structure
+## API
+ 
+The FastAPI backend exposes:
  
 ```text
-PolicyLens-Mini/
-│
-├── backend/
-│ ├── app/
-│ │ ├── main.py
-│ │ ├── routes.py
-│ │ ├── retrieval.py
-│ │ ├── pdf_utils.py
-│ │ └── ai_utils.py
-│ ├── requirements.txt
-│ ├── render.yaml
-│ └── runtime.txt
-│
-├── frontend/
-│ ├── app/
-│ │ ├── page.tsx
-│ │ ├── layout.tsx
-│ │ └── globals.css
-│ ├── public/
-│ ├── package.json
-│ └── next.config.ts
-│
-├── architecture/
-│ └── architecture_diagram.png
-│
-├── evaluation/
-│ ├── eval_results.json
-│ ├── evaluation.md
-│ └── evaluation_summary.md
-│
-├── demo/
-│ ├── screenshots/
-│ ├── demo_script.md
-│ └── demo_steps.md
-│
-├── data/
-│ ├── policies/
-│ └── raw/
-│
-├── scripts/
-│ └── generate_policies.py
-│
-├── design-and-evaluation.md
-├── ai-tooling.md
-└── README.md
+GET /health
+POST /upload
+POST /ask
+```
+ 
+### Health Check
+ 
+```text
+GET /health
+```
+ 
+Example:
+ 
+```json
+{
+"status": "ok"
+}
+```
+ 
+### Upload
+ 
+```text
+POST /upload
+```
+ 
+Accepts a PDF and returns the filename and extracted text.
+ 
+### Ask
+ 
+```text
+POST /ask
+```
+ 
+Receives:
+ 
+```text
+question
+text
+```
+ 
+and returns:
+ 
+```text
+answer
+score
+matched
 ```
  
 ---
  
-# Architecture
+## Architecture
  
-PolicyLens-Mini follows a separated frontend/backend web architecture.
+PolicyLens-Mini follows a separated frontend/backend architecture.
  
 ```text
 User
@@ -173,25 +218,78 @@ FastAPI Backend
 |
 +--> PDF Extraction
 |
-+--> Text Processing
++--> Sentence Chunking
 |
-+--> Deterministic Retrieval
++--> TF-IDF Retrieval
 |
-+--> Similarity Scoring
++--> Cosine Similarity
 |
-+--> Match Guardrail
++--> Relevance Guardrail
 |
-v
-Grounded Policy Answer
++------ Match ------> Policy Answer
+|
++---- No Match -----> Rejection
 ```
  
-The separation of concerns keeps the user interface, API layer, document processing and retrieval logic independently maintainable.
+This separation keeps presentation, API routing, document processing, retrieval, and evaluation independently maintainable.
  
-Additional architecture material is available in:
+Additional architecture documentation:
  
 ```text
 architecture/architecture_diagram.png
 design-and-evaluation.md
+```
+ 
+---
+ 
+## Repository Structure
+ 
+```text
+PolicyLens-Mini/
+|
+|-- app/
+| `-- eval/
+| `-- run_eval.py
+|
+|-- backend/
+| |-- app/
+| | |-- main.py
+| | |-- routes.py
+| | |-- retrieval.py
+| | `-- pdf_utils.py
+| |-- requirements.txt
+| |-- render.yaml
+| `-- README.md
+|
+|-- frontend/
+| |-- app/
+| | |-- page.tsx
+| | |-- layout.tsx
+| | `-- globals.css
+| |-- public/
+| `-- package.json
+|
+|-- architecture/
+| `-- architecture_diagram.png
+|
+|-- evaluation/
+| |-- eval_results.json
+| |-- evaluation.md
+| `-- evaluation_summary.md
+|
+|-- demo/
+| |-- screenshots/
+| |-- demo_script.md
+| `-- demo_steps.md
+|
+|-- data/
+| |-- policies/
+| `-- raw/
+|
+|-- ai-tooling.md
+|-- design-and-evaluation.md
+|-- evaluation_set.md
+`-- README.md
 ```
  
 ---
@@ -207,28 +305,21 @@ cd PolicyLens-Mini
  
 ## Backend
  
-Create and activate a Python virtual environment and install the backend dependencies.
- 
 ```powershell
 cd backend
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-```
- 
-Start FastAPI:
- 
-```powershell
 python -m uvicorn app.main:app --reload
 ```
  
-Backend:
+Health check:
  
 ```text
-http://127.0.0.1:8000
+http://127.0.0.1:8000/health
 ```
  
-API documentation:
+Interactive API documentation:
  
 ```text
 http://127.0.0.1:8000/docs
@@ -254,186 +345,63 @@ http://localhost:3000
  
 # Testing and Evaluation
  
-PolicyLens-Mini is tested at multiple levels, including:
+PolicyLens-Mini includes a reproducible automated evaluation suite.
  
-- Retrieval behaviour
-- Relevant policy questions
-- Unsupported questions
-- Similarity scoring
-- Guardrail behaviour
-- API health
-- PDF processing
-- Frontend-backend integration
-- Production behaviour
- 
-Evaluation artifacts are maintained under:
+The evaluator is located at:
  
 ```text
-evaluation/
+app/eval/run_eval.py
 ```
  
-Detailed testing and engineering decisions are documented in:
+The authoritative results are stored in:
  
 ```text
-design-and-evaluation.md
+evaluation/eval_results.json
 ```
  
----
- 
-# CI/CD
- 
-The project uses Git and GitHub for source control and incorporates automated CI/CD practices.
- 
-The CI workflow is stored in:
+The controlled evaluation contains:
  
 ```text
-.github/workflows/
+20 test cases
+4 policy documents
 ```
  
-The application is also configured for cloud deployment.
+The policies used are:
+ 
+- Paid Time Off
+- Information Security
+- Remote Work
+- Code of Conduct
+ 
+The evaluation contains both supported questions and intentionally unsupported questions.
  
 ---
  
-# Deployment
+## Baseline Evaluation
  
-PolicyLens-Mini is designed to operate as a deployed web application in addition to local development.
- 
-**Production application:**
-Add final deployed frontend URL here.
- 
-**Production backend:**
-Add final Render backend URL here.
- 
-The final deployed URLs will remain linked from this repository for Capstone evaluation.
- 
----
- 
-# Agile Engineering
- 
-PolicyLens-Mini was developed iteratively using agile engineering practices.
- 
-The Capstone development record includes:
- 
-- Product backlog
-- User stories
-- Sprint planning
-- At least three development sprints
-- Implementation tasks
-- Testing activities
-- Sprint completion evidence
-- Deployment activities
- 
-**Agile Task Board:**
-Add final accessible task-board URL here.
- 
----
- 
-# Design and Testing Documentation
- 
-The Capstone design and testing documentation covers:
- 
-- System architecture
-- Major engineering decisions
-- Technology choices and rationale
-- Software and architectural patterns
-- Retrieval architecture
-- Testing strategy
-- Automated and manual testing
-- Evaluation results
-- Deployment strategy
-- Hosting considerations
-- Cost considerations
-- Limitations and future improvements
- 
-See:
+The initial evaluation produced:
  
 ```text
-design-and-evaluation.md
+Correct: 15/20
+Accuracy: 75.00%
 ```
  
----
+Failures included:
  
-# AI-Assisted Engineering
- 
-AI development tools were used to support activities including debugging, architecture reasoning, code development, documentation and engineering analysis.
- 
-Usage is documented in:
- 
-```text
-ai-tooling.md
-```
- 
-Engineering decisions, integration, validation and final project responsibility remain with the project author.
+- Policy headings returned as answers
+- Unsupported questions incorrectly matched
+- Vocabulary mismatch
+- Incorrect selection between related policy sentences
  
 ---
  
-# Capstone Demonstration
+## Retrieval Improvements
  
-The final Quantic demonstration will show the deployed PolicyLens-Mini system operating across multiple representative user inputs, including:
+Evaluation findings led to several backend improvements:
  
-1. Application overview
-2. PDF policy upload
-3. Successful policy question
-4. Retrieval result
-5. Similarity score
-6. Unsupported-question guardrail
-7. Architecture
-8. Testing and evaluation
-9. GitHub repository
-10. CI/CD and deployment
-11. Agile development evidence
+- Markdown headings excluded from answers
+- Relevance threshold increased from `0.10` to `0.20`
+- Limited deterministic query expansion added
+- Unsupported-question rejection improved
  
-The final Capstone recording will follow the required **15 to 20 minute** presentation duration.
- 
----
- 
-# Capstone Deliverables
- 
-- [x] GitHub repository
-- [x] Backend implementation
-- [x] Frontend implementation
-- [x] PDF document processing
-- [x] Policy question answering
-- [x] Deterministic retrieval
-- [x] Similarity scoring
-- [x] Unsupported-question guardrail
-- [x] Architecture artifacts
-- [x] Evaluation artifacts
-- [x] Git version control
-- [x] CI/CD artifacts
-- [ ] Final deployed URLs verified
-- [ ] Agile task board finalized
-- [ ] Design and testing document final audit
-- [ ] Quantic grader repository access verified
-- [ ] Final 15–20 minute demonstration recorded
-- [ ] Final submission links verified
- 
----
- 
-# Repository
- 
-GitHub:
- 
-https://github.com/dixkox/PolicyLens-Mini
- 
----
- 
-## Author
- 
-**Tinubu Damilola**
-Master of Science in Software Engineering
-Quantic School of Business and Technology
- 
----
- 
-## Academic Integrity
- 
-PolicyLens-Mini was developed as an academic software engineering project. External tools, libraries and AI-assisted development tools used during development are documented where appropriate.
- 
-Synthetic policy data is used for demonstration and evaluation purposes.
- 
----
- 
-## License
- 
-See the applicable repository license files for licensing information.
+The same 20 cases were
