@@ -2,11 +2,13 @@
  
 ## 1. Overview
  
-This document describes the use of AI-assisted development tools during the design, implementation, debugging, testing, documentation, and refinement of PolicyLens-Mini.
+This document describes how AI-assisted tools were used during the development of PolicyLens-Mini.
  
-PolicyLens-Mini is a lightweight policy analysis application built with a Next.js frontend and FastAPI backend. The application supports PDF policy upload, document processing, natural-language questions, deterministic retrieval, similarity scoring, and relevance guardrails.
+PolicyLens-Mini is a lightweight policy analysis application built with a Next.js frontend and FastAPI backend. It supports PDF policy upload, text extraction, natural-language questions, deterministic lexical retrieval, similarity scoring, and relevance guardrails.
  
-AI tools were used as engineering assistants. Generated suggestions and code were reviewed, tested, modified, or rejected as necessary before inclusion in the project.
+AI tools were used as engineering assistants for development, debugging, architecture exploration, evaluation, and documentation.
+ 
+Generated suggestions were reviewed, tested, modified, or rejected before inclusion in the final project.
  
 ---
  
@@ -14,176 +16,350 @@ AI tools were used as engineering assistants. Generated suggestions and code wer
  
 ### 2.1 Microsoft Copilot
  
-Microsoft Copilot was used throughout development for:
+Microsoft Copilot assisted with:
  
-- Debugging FastAPI errors
-- Investigating frontend-backend integration issues
-- Reviewing retrieval logic
-- Improving guardrails
-- Troubleshooting Git and repository structure
-- Reviewing evaluation results
-- Improving project documentation
-- Reviewing Capstone deliverables
+- FastAPI debugging
+- Frontend-backend integration
+- Retrieval debugging
+- Evaluation analysis
+- Guardrail improvements
+- Git and repository cleanup
+- Architecture review
+- Documentation review
+- Capstone preparation
  
-A particularly useful role was identifying inconsistencies between documentation and the actual PolicyLens-Mini implementation.
+Copilot was particularly useful for comparing implementation behavior against evaluation results and identifying inconsistencies between older project documentation and the current PolicyLens-Mini implementation.
  
-### 2.2 Cursor
+---
+ 
+### 2.2 Cursor IDE
  
 Cursor was used as an AI-assisted development environment for:
  
 - Project scaffolding
 - Python development
+- TypeScript development
 - Refactoring
-- Creating and modifying project files
-- Troubleshooting imports and paths
+- File creation and modification
+- Import and path debugging
 - Backend integration
 - Frontend development
-- Repository reconstruction and cleanup
+- Repository reconstruction
+- Code cleanup
  
-AI-generated changes were reviewed and tested before being retained.
+AI-generated code changes were reviewed and tested before being retained.
+ 
+---
  
 ### 2.3 Gemini
  
-Gemini was used during earlier stages of development for:
+Gemini was used during earlier development and experimentation for:
  
 - Architecture exploration
-- Retrieval and RAG experimentation
+- Retrieval design discussions
 - Policy dataset generation
 - Evaluation-question development
-- Documentation drafts
-- Exploring possible system improvements
+- Documentation drafting
+- Exploring potential RAG improvements
  
-Some suggested approaches were intentionally not included in the final implementation because they added unnecessary complexity.
+Some proposed approaches were intentionally not used in the final implementation because they introduced unnecessary complexity for PolicyLens-Mini.
  
 ---
  
-## 3. How AI Assisted Development
+## 3. AI-Assisted Architecture Development
  
-### Architecture
+AI tools assisted with evaluating architectural alternatives.
  
-AI tools helped compare architectural alternatives and reason about frontend-backend separation, PDF processing, retrieval, scoring, and guardrails.
+The final PolicyLens-Mini architecture uses:
  
-The final architecture was selected and refined based on implementation requirements and observed system behaviour.
+```text
+Next.js Frontend
+|
+v
+FastAPI Backend
+|
++---- PDF Extraction
+|
++---- Deterministic Retrieval
+|
+v
+TF-IDF Weighting
+|
+v
+Cosine Similarity
+|
+v
+Relevance Guardrail
+|
++----+----+
+| |
+Answer Reject
+```
  
-### Development and Debugging
+The final architecture was selected and refined through implementation, testing, and evaluation.
  
-AI assistance was particularly useful for:
+---
  
-- FastAPI routing problems
-- API requests and responses
-- CORS and frontend-backend communication
-- Python dependency issues
+## 4. AI-Assisted Debugging
+ 
+AI assistance was used to investigate:
+ 
+- FastAPI routing
+- API request formatting
+- CORS configuration
+- Frontend fetch behavior
+- Python environments
 - Next.js integration
-- Git repository cleanup
-- Environment configuration
-- Retrieval debugging
+- Retrieval failures
+- Similarity scoring
+- Git cleanup
+- Repository organization
  
-### Documentation
- 
-AI tools assisted with drafts and reviews of:
- 
-- `README.md`
-- `design-and-evaluation.md`
-- `evaluation/evaluation.md`
-- `evaluation/evaluation_summary.md`
-- `demo/demo_script.md`
-- `demo/demo_steps.md`
-- `ai-tooling.md`
- 
-Documentation was reviewed against the actual implementation because AI-generated documentation occasionally reflected older versions of the project.
- 
-### Evaluation
- 
-AI assistance was used to:
- 
-- Review evaluation outputs
-- Identify incorrect and unsupported answers
-- Examine retrieval failure modes
-- Review latency measurements
-- Distinguish retrieval relevance from final-answer correctness
-- Suggest improvements to the evaluation methodology
- 
-Unsuccessful evaluation cases are retained as engineering evidence rather than being removed merely to improve reported performance.
+AI debugging suggestions were treated as hypotheses and verified against actual system behavior.
  
 ---
  
-## 4. Benefits
+## 5. AI-Assisted Evaluation
  
-AI-assisted development improved productivity in several areas:
+AI tools assisted with developing and reviewing the automated evaluation workflow.
  
-- Faster debugging
-- Faster implementation and refactoring
-- Improved code review
-- Architecture exploration
-- Documentation development
-- Evaluation analysis
-- Repository cleanup
+The final controlled evaluation uses:
  
-AI assistance was especially useful during troubleshooting because multiple possible causes could be examined quickly before testing a solution.
+```text
+app/eval/run_eval.py
+```
+ 
+Results are written to:
+ 
+```text
+evaluation/eval_results.json
+```
+ 
+The evaluation contains:
+ 
+- 20 controlled test cases
+- 4 policy documents
+- Supported policy questions
+- Intentionally unsupported questions
+- Expected-answer checks
+- Match-status checks
+- Similarity scores
+- Latency measurements
  
 ---
  
-## 5. Limitations Observed
+## 6. Evaluation-Driven Engineering
+ 
+The initial controlled evaluation produced:
+ 
+```text
+Correct: 15/20
+Accuracy: 75.00%
+```
+ 
+AI assistance helped analyze the five failures.
+ 
+Identified issues included:
+ 
+- Markdown headings becoming answer candidates
+- Weak rejection of unsupported questions
+- Vocabulary mismatch
+- Incorrect selection between related policy sentences
+ 
+The findings were then used to guide backend improvements.
+ 
+---
+ 
+## 7. Retrieval Improvements
+ 
+The retrieval implementation was improved by:
+ 
+### Heading Exclusion
+ 
+Markdown headings were removed from eligible answer candidates.
+ 
+### Stronger Relevance Guardrail
+ 
+The relevance threshold was increased from:
+ 
+```text
+0.10
+```
+ 
+to:
+ 
+```text
+0.20
+```
+ 
+to reduce weak matches.
+ 
+### Deterministic Query Expansion
+ 
+A limited query-expansion mapping was introduced for selected vocabulary mismatches.
+ 
+### Improved Abstention
+ 
+Unsupported questions with insufficient evidence are rejected rather than returning weakly related policy content.
+ 
+---
+ 
+## 8. Final Evaluation
+ 
+The same 20 controlled test cases were rerun after the backend improvements.
+ 
+Final result:
+ 
+```text
+Correct: 20/20
+Accuracy: 100.00%
+```
+ 
+The measured improvement was:
+ 
+```text
+Baseline: 15/20 (75%)
+Final: 20/20 (100%)
+Change: +25 percentage points
+```
+ 
+The 100% result applies specifically to the controlled 20-case evaluation suite and is not presented as universal system accuracy.
+ 
+---
+ 
+## 9. AI-Assisted Documentation
+ 
+AI tools assisted in reviewing and improving:
+ 
+```text
+README.md
+backend/README.md
+ai-tooling.md
+design-and-evaluation.md
+evaluation_set.md
+evaluation/evaluation.md
+evaluation/evaluation_summary.md
+demo/demo_script.md
+demo/demo_steps.md
+```
+ 
+A major documentation task involved removing obsolete material from the earlier Policy-RAG-App implementation and aligning the repository with PolicyLens-Mini.
+ 
+---
+ 
+## 10. Limitations of AI Assistance
+ 
+AI assistance introduced several challenges.
  
 ### Overly Complex Suggestions
  
-AI tools sometimes proposed solutions that were more complex than required, including semantic retrieval, vector databases, reranking, and additional frameworks.
+Some suggestions involved technologies or architectures that were unnecessary for the final lightweight implementation.
  
-These suggestions were evaluated rather than automatically implemented.
+### Incorrect Debugging Suggestions
  
-### Incorrect Diagnoses
- 
-AI-generated debugging suggestions were not always correct. Proposed solutions therefore required testing against the actual application.
+AI-generated diagnoses were not always correct and required verification.
  
 ### Documentation Drift
  
-A significant limitation was documentation drift.
+Earlier generated documentation continued to describe previous project architecture and evaluation results after the implementation had changed.
  
-Earlier AI-generated documentation continued to describe the previous Policy-RAG-App architecture after PolicyLens-Mini had evolved.
+### Overgeneralization
  
-This required a final repository audit to ensure that documentation, architecture diagrams, demo materials, evaluation artifacts, and implementation accurately represented the same system.
+Evaluation results require careful wording.
  
-### Evaluation Interpretation
+For example:
  
-AI-generated evaluation summaries could overstate system performance if outputs were not independently checked.
+```text
+20/20 on the controlled evaluation suite
+```
  
-For this reason, PolicyLens-Mini evaluation results are reviewed against the underlying recorded outputs.
+does not mean:
  
----
+```text
+100% accurate for every possible policy and question
+```
  
-## 6. Human Oversight
- 
-AI-generated output was treated as a development aid rather than authoritative project output.
- 
-Engineering oversight included:
- 
-- Reviewing generated code
-- Running and testing the application
-- Verifying API behaviour
-- Reviewing architecture changes
-- Inspecting Git changes
-- Reviewing evaluation results
-- Correcting inaccurate documentation
-- Rejecting inappropriate technical suggestions
- 
-Final responsibility for the submitted PolicyLens-Mini project remains with the project author.
+Human review was necessary to maintain this distinction.
  
 ---
  
-## 7. Academic Integrity
+## 11. Human Oversight
  
-AI tools were used to assist software engineering activities such as brainstorming, debugging, code development, documentation, and analysis.
+AI-generated material was treated as engineering assistance rather than authoritative output.
  
-AI assistance is documented transparently in this file.
+Human oversight included:
  
-Generated material was reviewed and adapted to the project rather than assumed to be correct. Project evaluation also records identified limitations and unsuccessful cases instead of presenting only successful results.
+- Reviewing code
+- Running the application
+- Testing APIs
+- Inspecting retrieval results
+- Reviewing similarity scores
+- Running automated evaluation
+- Comparing baseline and final results
+- Verifying Git changes
+- Correcting documentation
+- Rejecting unsuitable suggestions
+ 
+Final responsibility for the PolicyLens-Mini implementation and submission remains with the project author.
  
 ---
  
-## 8. Conclusion
+## 12. Academic Integrity
  
-AI-assisted engineering contributed substantially to the development of PolicyLens-Mini, particularly in debugging, implementation support, architecture exploration, documentation, and evaluation analysis.
+AI-assisted tools were used transparently during software engineering activities including:
  
-The development process also demonstrated an important engineering lesson: AI-generated code, documentation, and analysis require verification.
+- Brainstorming
+- Code development
+- Debugging
+- Refactoring
+- Testing
+- Evaluation analysis
+- Documentation
  
-PolicyLens-Mini therefore combines AI-assisted development with testing, human review, source control, evaluation, and iterative engineering.
+AI-generated material was reviewed and adapted rather than assumed to be correct.
+ 
+The project documentation records the use of AI assistance and the engineering verification performed afterward.
+ 
+---
+ 
+## 13. Engineering Lesson
+ 
+One of the most important lessons from the project was that AI assistance itself requires verification.
+ 
+PolicyLens-Mini followed an iterative process:
+ 
+```text
+Implement
+|
+Test
+|
+Evaluate
+|
+Identify Failures
+|
+Improve
+|
+Retest
+|
+Document
+```
+ 
+The improvement from 15/20 to 20/20 provides a concrete example of evaluation-driven development.
+ 
+---
+ 
+## 14. Conclusion
+ 
+AI-assisted engineering contributed significantly to PolicyLens-Mini through:
+ 
+- Development support
+- Debugging
+- Architecture exploration
+- Retrieval analysis
+- Evaluation development
+- Documentation
+- Repository cleanup
+ 
+The project also demonstrated the importance of combining AI assistance with testing, engineering judgment, source control, evaluation, and human verification.
+ 
+The final PolicyLens-Mini implementation therefore represents human-directed software engineering supported by AI-assisted development tools.
