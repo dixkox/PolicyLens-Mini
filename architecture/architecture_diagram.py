@@ -1,27 +1,74 @@
-from graphviz import Digraph
+from graphviz import Digraph  # type: ignore
 
-dot = Digraph(comment="Policy RAG Architecture (TF-IDF)", format="png")
 
-dot.attr('node', shape='box', style='filled', color='lightblue', fontname='Arial')
+dot = Digraph(
+    "PolicyLens-Mini Architecture",
+    format="png",
+    comment="PolicyLens-Mini Architecture",
+)
 
-dot.node('UI', 'Frontend\n(index.html + JS)')
-dot.node('API', 'FastAPI Backend\n(/ask endpoint)')
-dot.node('RAG', 'RAG Pipeline\n(TF-IDF Retrieval)')
-dot.node('Load', 'Load Policy Files\n(.txt)')
-dot.node('Chunk', 'Chunk by Headings\n(# Policy Title)')
-dot.node('TFIDF', 'TF-IDF Vectorizer')
-dot.node('Sim', 'Cosine Similarity\nBest-Match Retrieval')
-dot.node('Docs', 'Policy Store\n(.txt files)')
-dot.node('Answer', 'Best Policy Chunk\nReturned to UI')
 
-dot.edge('UI', 'API', label='User Question')
-dot.edge('API', 'RAG', label='Call RAG Pipeline')
-dot.edge('RAG', 'Load')
-dot.edge('Load', 'Chunk')
-dot.edge('Chunk', 'TFIDF')
-dot.edge('TFIDF', 'Sim')
-dot.edge('Docs', 'TFIDF', label='Indexed Chunks')
-dot.edge('Sim', 'API', label='Best Match')
-dot.edge('API', 'UI', label='Return Answer')
+dot.attr(
+    rankdir="TB",
+    bgcolor="white",
+    label="PolicyLens-Mini System Architecture",
+    labelloc="t",
+    fontsize="20",
+    fontname="Arial",
+)
 
-dot.render('policy_rag_architecture_tfidf', view=True)
+
+dot.attr(
+    "node",
+    shape="box",
+    style="rounded,filled",
+    fillcolor="lightblue",
+    color="#2563EB",
+    fontname="Arial",
+    fontsize="11",
+)
+
+# Components
+dot.node("User", "User")
+dot.node("Frontend", "Next.js Frontend\nUpload PDF + Ask Question")
+dot.node("API", "FastAPI REST API\n/upload + /ask")
+dot.node("PDF", "PDF Text Extraction")
+dot.node("Normalize", "Text Normalization")
+dot.node("Segment", "Document Segmentation")
+dot.node("Retrieve", "Deterministic TF-IDF Retrieval")
+dot.node("Score", "Similarity Scoring")
+dot.node("Guardrail", "Relevance Guardrail")
+dot.node("Match", "Relevant Match", fillcolor="lightgreen")
+dot.node("NoMatch", "No Relevant Match", fillcolor="lightcoral")
+dot.node("Answer", "Policy Answer")
+dot.node("Reject", "Unsupported Question Rejection")
+dot.node("Response", "Answer + Score + matched")
+
+# Flow
+dot.edge("User", "Frontend")
+dot.edge("Frontend", "API")
+
+dot.edge("API", "PDF", label="/upload")
+dot.edge("PDF", "Frontend", label="Extracted Text")
+
+dot.edge("API", "Normalize", label="/ask")
+dot.edge("Normalize", "Segment")
+dot.edge("Segment", "Retrieve")
+dot.edge("Retrieve", "Score")
+dot.edge("Score", "Guardrail")
+
+dot.edge("Guardrail", "Match", label="matched = true")
+dot.edge("Guardrail", "NoMatch", label="matched = false")
+
+dot.edge("Match", "Answer")
+dot.edge("NoMatch", "Reject")
+
+dot.edge("Answer", "Response")
+dot.edge("Reject", "Response")
+dot.edge("Response", "Frontend")
+
+dot.render(
+    "architecture/architecture_diagram",
+    cleanup=True,
+    view=True,
+)
