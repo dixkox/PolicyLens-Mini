@@ -10,12 +10,17 @@ STOP_WORDS = {
     "when", "where", "which", "who", "why", "with"
 }
 
+
 QUERY_EXPANSIONS = {
     "avoid": {"conflicts"},
     "approval": {"manager"},
     "outside": {"external"},
     "activities": {"employment", "consulting"},
 }
+
+
+def normalize_text(text):
+    return re.sub(r"\s+", " ", text or "").strip()
 
 
 def tokenize(text):
@@ -35,7 +40,40 @@ def tokenize(text):
     return expanded
 
 
-def chunk_policy_text(text):
+def is_policy_heading(line):
+    line = normalize_text(line)
+
+    if not line:
+        return False
+
+    # Markdown heading
+    if line.startswith("#"):
+        return True
+
+    # PDF headings such as:
+    # 1. Anti-Harassment Policy
+    # 14. Information Security Policy
+    if re.fullmatch(
+        r"\d+\.\s+.+(?:Policy|Conduct)",
+        line,
+        flags=re.IGNORECASE,
+    ):
+        return True
+
+    return False
+
+
+def extract_sections(text):
+    """
+    Returns:
+    [
+    {
+    "heading": "Anti-Harassment Policy",
+    "sentences": [...]
+    }
+    ]
+    """
+
     text = (
         (text or "")
         .replace("\r\n", "\n")
@@ -43,30 +81,46 @@ def chunk_policy_text(text):
         .strip()
     )
 
-    if not text:
-        return []
+    sections = []
+    current_heading = ""
+    current_sentences = []
 
-    chunks = []
+    def save_section():
+        nonlocal current_heading, current_sentences
 
-    for line in text.split("\n"):
-        line = re.sub(r"\s+", " ", line).strip()
+        if current_sentences:
+            sections.append({
+                "heading": current_heading,
+                "sentences": current_sentences.copy(),
+            })
+
+        current_sentences = []
+
+    for raw_line in text.split("\n"):
+        line = normalize_text(raw_line)
 
         if not line:
             continue
 
-        # Headings identify sections but should never become answers.
-        if line.startswith("#"):
+        if is_policy_heading(line):
+            save_section()
+            current_heading = re.sub(
+                r"^\d+\.\s*",
+                "",
+                line.lstrip("#").strip(),
+            )
             continue
 
         sentences = re.split(r"(?<=[.!?])\s+", line)
 
         for sentence in sentences:
-            sentence = sentence.strip()
+            sentence = normalize_text(sentence)
 
             if len(sentence) >= 20:
-                chunks.append(sentence)
+                current_sentences.append(sentence)
 
-    return chunks
+    save_section()
+    return sections
 
 
 def calculate_idf(documents):
@@ -129,7 +183,7 @@ def similarity(vector_a, vector_b):
 
 
 def retrieve_answer(question, text, threshold=0.20):
-    question = (question or "").strip()
+    question = normalize_text(question)
     text = (text or "").strip()
 
     if not question:
@@ -146,16 +200,15 @@ def retrieve_answer(question, text, threshold=0.20):
             "matched": False,
         }
 
-    chunks = chunk_policy_text(text)
+    sections = extract_sections(text)
 
-    if not chunks:
+    if not sections:
         return {
             "answer": "No readable policy information was found.",
             "score": 0.0,
             "matched": False,
         }
 
-    documents = [tokenize(chunk) for chunk in chunks]
     question_tokens = tokenize(question)
 
     if not question_tokens:
@@ -165,16 +218,116 @@ def retrieve_answer(question, text, threshold=0.20):
             "matched": False,
         }
 
-    idf = calculate_idf(documents + [question_tokens])
+    # ---------------------------------------------------------
+    # POLICY-LEVEL QUESTION
+    # Example:
+    # "What is Anti-Harassment Policy?"
+    #
+    # Match the policy heading, but RETURN CONTENT UNDER IT.
+    # ---------------------------------------------------------
 
-    question_vector = make_vector(question_tokens, idf)
+    heading_documents = [
+        tokenize(section["heading"])
+        for section in sections
+        if section["heading"]
+    ]
+
+    heading_sections = [
+        section
+        for section in sections
+        if section["heading"]
+    ]
+
+    if heading_documents:
+        heading_idf = calculate_idf(
+            heading_documents + [question_tokens]
+        )
+
+        question_vector = make_vector(
+            question_tokens,
+            heading_idf,
+        )
+
+        heading_scores = []
+
+        for document in heading_documents:
+            heading_vector = make_vector(
+                document,
+                heading_idf,
+            )
+
+            heading_scores.append(
+                similarity(
+                    question_vector,
+                    heading_vector,
+                )
+            )
+
+        best_heading_index = max(
+            range(len(heading_scores)),
+            key=heading_scores.__getitem__,
+        )
+
+        best_heading_score = heading_scores[best_heading_index]
+        selected_section = heading_sections[best_heading_index]
+
+        # Strong heading match means the user is asking
+        # about a particular policy.
+        if (
+            best_heading_score >= 0.60
+            and selected_section["sentences"]
+        ):
+            answer = " ".join(selected_section["sentences"])
+            return {
+                "answer": answer,
+                "score": round(best_heading_score, 3),
+                "matched": True,
+            }
+
+    # ---------------------------------------------------------
+    # FACT-LEVEL RETRIEVAL
+    # ---------------------------------------------------------
+
+    candidates = []
+
+    for section in sections:
+        for sentence in section["sentences"]:
+            candidates.append(sentence)
+
+    if not candidates:
+        return {
+            "answer": "No readable policy information was found.",
+            "score": 0.0,
+            "matched": False,
+        }
+
+    documents = [
+        tokenize(candidate)
+        for candidate in candidates
+    ]
+
+    idf = calculate_idf(
+        documents + [question_tokens]
+    )
+
+    question_vector = make_vector(
+        question_tokens,
+        idf,
+    )
 
     scores = []
 
     for document in documents:
-        document_vector = make_vector(document, idf)
+        document_vector = make_vector(
+            document,
+            idf,
+        )
+
         scores.append(
-            similarity(question_vector, document_vector)
+            similarity(
+                question_vector,
+                document_vector,
+            )
         )
 
     best_index = max(
@@ -192,7 +345,7 @@ def retrieve_answer(question, text, threshold=0.20):
         }
 
     return {
-        "answer": chunks[best_index],
+        "answer": candidates[best_index],
         "score": round(best_score, 3),
         "matched": True,
     }

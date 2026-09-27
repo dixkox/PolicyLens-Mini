@@ -6,11 +6,11 @@
     "incorrect_cases": 0,
     "accuracy_percent": 100.0,
     "latency_ms": {
-      "mean": 15.759,
-      "median": 15.379,
-      "p95": 29.784,
-      "minimum": 4.345,
-      "maximum": 30.294
+      "mean": 18.576,
+      "median": 19.732,
+      "p95": 28.401,
+      "minimum": 3.353,
+      "maximum": 40.934
     }
   },
   "results": [
@@ -23,7 +23,7 @@
       "score": 0.447,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 10.368
+      "measured_latency_ms": 21.892
     },
     {
       "policy": "pto_policy.md",
@@ -34,7 +34,7 @@
       "score": 0.264,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 18.509
+      "measured_latency_ms": 25.179
     },
     {
       "policy": "pto_policy.md",
@@ -45,7 +45,7 @@
       "score": 0.565,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 4.443
+      "measured_latency_ms": 4.927
     },
     {
       "policy": "pto_policy.md",
@@ -56,7 +56,7 @@
       "score": 0.279,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 26.602
+      "measured_latency_ms": 23.44
     },
     {
       "policy": "pto_policy.md",
@@ -67,7 +67,7 @@
       "score": 0.15,
       "matched": false,
       "correct": true,
-      "measured_latency_ms": 29.758
+      "measured_latency_ms": 14.78
     },
     {
       "policy": "security_policy.md",
@@ -78,7 +78,7 @@
       "score": 0.641,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 16.414
+      "measured_latency_ms": 22.835
     },
     {
       "policy": "security_policy.md",
@@ -89,7 +89,7 @@
       "score": 0.35,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 15.483
+      "measured_latency_ms": 5.592
     },
     {
       "policy": "security_policy.md",
@@ -100,7 +100,7 @@
       "score": 0.765,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 14.827
+      "measured_latency_ms": 24.719
     },
     {
       "policy": "security_policy.md",
@@ -111,7 +111,7 @@
       "score": 0.514,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 5.493
+      "measured_latency_ms": 15.429
     },
     {
       "policy": "security_policy.md",
@@ -122,7 +122,7 @@
       "score": 0.19,
       "matched": false,
       "correct": true,
-      "measured_latency_ms": 6.914
+      "measured_latency_ms": 15.665
     },
     {
       "policy": "remote_work_policy.md",
@@ -133,7 +133,7 @@
       "score": 0.561,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 30.294
+      "measured_latency_ms": 21.77
     },
     {
       "policy": "remote_work_policy.md",
@@ -144,7 +144,7 @@
       "score": 0.354,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 5.372
+      "measured_latency_ms": 15.159
     },
     {
       "policy": "remote_work_policy.md",
@@ -155,7 +155,7 @@
       "score": 0.438,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 24.807
+      "measured_latency_ms": 15.464
     },
     {
       "policy": "remote_work_policy.md",
@@ -166,7 +166,7 @@
       "score": 0.59,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 15.753
+      "measured_latency_ms": 3.353
     },
     {
       "policy": "remote_work_policy.md",
@@ -177,7 +177,7 @@
       "score": 0.119,
       "matched": false,
       "correct": true,
-      "measured_latency_ms": 14.985
+      "measured_latency_ms": 27.741
     },
     {
       "policy": "code_of_conduct.md",
@@ -188,7 +188,7 @@
       "score": 0.311,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 14.6
+      "measured_latency_ms": 22.536
     },
     {
       "policy": "code_of_conduct.md",
@@ -199,7 +199,7 @@
       "score": 0.489,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 15.569
+      "measured_latency_ms": 17.693
     },
     {
       "policy": "code_of_conduct.md",
@@ -210,7 +210,7 @@
       "score": 0.376,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 4.345
+      "measured_latency_ms": 27.381
     },
     {
       "policy": "code_of_conduct.md",
@@ -221,7 +221,7 @@
       "score": 0.815,
       "matched": true,
       "correct": true,
-      "measured_latency_ms": 25.365
+      "measured_latency_ms": 5.033
     },
     {
       "policy": "code_of_conduct.md",
@@ -232,7 +232,7 @@
       "score": 0.0,
       "matched": false,
       "correct": true,
-      "measured_latency_ms": 15.276
+      "measured_latency_ms": 40.934
     }
   ]
 }
