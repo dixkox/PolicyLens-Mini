@@ -33,7 +33,27 @@ PolicyLens-Mini demonstrates:
 ---
  
 ## Core Features
+## Try the Live Demo
  
+Live application:
+ 
+https://policylens-mini.vercel.app
+ 
+A sample policy handbook is included in this repository for testing:
+ 
+`demo/PolicyLens_Mini_Complete_Policy_Handbook.pdf`
+ 
+### Demo Steps
+ 
+1. Download `PolicyLens_Mini_Complete_Policy_Handbook.pdf`.
+2. Open the live PolicyLens-Mini application.
+3. Select the downloaded PDF.
+4. Click **Upload**.
+5. Ask a policy-related question, for example:
+- What is Attendance Policy?
+- How quickly must security incidents be reported?
+6. PolicyLens-Mini returns information supported by the uploaded document.
+7. Questions about policies not contained in the document are rejected. 
 ### PDF Policy Upload
  
 Users can upload PDF policy documents.
