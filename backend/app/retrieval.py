@@ -55,7 +55,6 @@ def chunk_policy_text(text):
         if not line:
             continue
 
-        # Headings identify sections but should never become answers.
         if line.startswith("#"):
             continue
 
@@ -68,6 +67,63 @@ def chunk_policy_text(text):
                 chunks.append(sentence)
 
     return chunks
+
+
+def extract_policy_sections(text):
+    text = (
+        (text or "")
+        .replace("\r\n", "\n")
+        .replace("\r", "\n")
+        .strip()
+    )
+
+    sections = []
+    current_heading = None
+    current_content = []
+
+    def save_section():
+        nonlocal current_heading, current_content
+
+        if current_heading and current_content:
+            content = " ".join(current_content).strip()
+
+            if content:
+                sections.append({
+                    "heading": current_heading,
+                    "content": content,
+                })
+
+            current_content = []
+
+    for raw_line in text.split("\n"):
+        line = re.sub(r"\s+", " ", raw_line).strip()
+
+        if not line:
+            continue
+
+        if line.startswith("#"):
+            save_section()
+            current_heading = line.lstrip("#").strip()
+            continue
+
+        if re.fullmatch(
+            r"\d+\.\s+.+(?:Policy|Conduct)",
+            line,
+            flags=re.IGNORECASE,
+        ):
+            save_section()
+            current_heading = re.sub(
+                r"^\d+\.\s*",
+                "",
+                line,
+            ).strip()
+            continue
+
+        if current_heading:
+            current_content.append(line)
+
+    save_section()
+    return sections
 
 
 def calculate_idf(documents):
@@ -147,9 +203,11 @@ def retrieve_answer(question, text, threshold=0.20):
             "matched": False,
         }
 
-    # Guardrail for explicit policy-name questions.
-    # Example:
-    # "What is cook Policy?"
+    # Handle explicit policy-name questions separately.
+    # Examples:
+    # What is Anti-Harassment Policy?
+    # What is Remote Work Policy?
+    # What is cook Policy?
     policy_name_match = re.fullmatch(
         r"(?:what\s+is\s+)?(?:the\s+)?(.+?)\s+policy[?.!]*",
         question.lower(),
@@ -159,21 +217,49 @@ def retrieve_answer(question, text, threshold=0.20):
         requested_name = policy_name_match.group(1).strip()
 
         requested_tokens = set(tokenize(requested_name))
-        document_tokens = set(tokenize(text))
 
+        sections = extract_policy_sections(text)
+
+        best_section = None
+        best_overlap = 0
+
+        for section in sections:
+            heading_tokens = set(tokenize(section["heading"]))
+
+            heading_tokens.discard("policy")
+            heading_tokens.discard("conduct")
+
+            overlap = len(
+                requested_tokens.intersection(heading_tokens)
+            )
+
+            if overlap > best_overlap:
+                best_overlap = overlap
+                best_section = section
+
+        # A real policy name was found.
         if (
             requested_tokens
-            and not requested_tokens.issubset(document_tokens)
+            and best_section
+            and best_overlap == len(requested_tokens)
         ):
             return {
-                "answer": (
-                    "This question is not covered by the "
-                    "uploaded policy document."
-                ),
-                "score": 0.0,
-                "matched": False,
+                "answer": best_section["content"],
+                "score": 1.0,
+                "matched": True,
             }
 
+        # Explicit X Policy question, but X does not exist.
+        return {
+            "answer": (
+                "This question is not covered by the "
+                "uploaded policy document."
+            ),
+            "score": 0.0,
+            "matched": False,
+        }
+
+    # Existing fact-level retrieval remains unchanged.
     chunks = chunk_policy_text(text)
 
     if not chunks:
