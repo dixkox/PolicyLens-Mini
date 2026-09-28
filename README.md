@@ -6,14 +6,38 @@
  
 The application allows users to upload a PDF policy document and ask natural-language questions about its contents.
  
-PolicyLens-Mini uses deterministic lexical retrieval, TF-IDF-style weighting, cosine similarity, and a relevance guardrail to retrieve supporting policy information or reject questions when sufficient evidence is not available.
+PolicyLens-Mini uses deterministic lexical retrieval, TF-IDF-style weighting, cosine similarity, deterministic query expansion, policy-section retrieval, and relevance guardrails to retrieve supporting policy information or reject unsupported questions.
  
 ---
  
+## Live Demo
+ 
+**Application:**
+https://policylens-mini.vercel.app
+ 
+**Sample Policy Handbook:**
+demo/PolicyLens_Mini_Complete_Policy_Handbook.pdf
+ 
+### Quick Demo
+ 
+1. Download the sample policy handbook above.
+2. Open the live PolicyLens-Mini application.
+3. Select the downloaded PDF.
+4. Click **Upload**.
+5. Ask a supported question, for example:
+- `What is Attendance Policy?`
+- `What is Remote Work Policy?`
+- `How quickly must security incidents be reported?`
+6. Try an unsupported policy question:
+- `What is Cook Policy?`
+7. PolicyLens-Mini returns policy information when relevant evidence exists and rejects unsupported policy questions.
+ 
+---
+
 ## Project Objectives
  
 PolicyLens-Mini demonstrates:
- 
+
 - Full-stack software engineering
 - PDF document ingestion
 - Text extraction
@@ -21,6 +45,7 @@ PolicyLens-Mini demonstrates:
 - Deterministic retrieval
 - TF-IDF-style weighting
 - Cosine similarity scoring
+- Policy-section retrieval
 - Unsupported-question guardrails
 - REST API development
 - Frontend-backend integration
@@ -33,60 +58,79 @@ PolicyLens-Mini demonstrates:
 ---
  
 ## Core Features
-## Try the Live Demo
  
-Live application:
- 
-https://policylens-mini.vercel.app
- 
-A sample policy handbook is included in this repository for testing:
- 
-`demo/PolicyLens_Mini_Complete_Policy_Handbook.pdf`
- 
-### Demo Steps
- 
-1. Download `PolicyLens_Mini_Complete_Policy_Handbook.pdf`.
-2. Open the live PolicyLens-Mini application.
-3. Select the downloaded PDF.
-4. Click **Upload**.
-5. Ask a policy-related question, for example:
-- What is Attendance Policy?
-- How quickly must security incidents be reported?
-6. PolicyLens-Mini returns information supported by the uploaded document.
-7. Questions about policies not contained in the document are rejected. 
 ### PDF Policy Upload
  
 Users can upload PDF policy documents.
  
-The FastAPI backend extracts the document text and makes it available for policy questioning.
+The FastAPI backend extracts text from the uploaded document and makes the extracted content available for policy questioning.
  
 ### Policy Question Answering
  
 Users can ask natural-language questions about the uploaded policy.
  
-The backend retrieves the policy sentence with the strongest lexical similarity to the question.
+For factual questions, the backend retrieves relevant policy information using deterministic lexical similarity.
  
-### Deterministic Retrieval
+For explicit policy-name questions, PolicyLens-Mini can retrieve the complete content associated with the matching policy section.
  
-The retrieval pipeline performs:
+For example:
+ 
+```text
+What is Attendance Policy?
+```
+ 
+returns the content of the Attendance Policy section.
+ 
+### Unsupported Policy Detection
+ 
+PolicyLens-Mini includes a guardrail for policy questions that are not supported by the uploaded document.
+ 
+For example:
+ 
+```text
+What is Cook Policy?
+```
+ 
+returns:
+ 
+```text
+This question is not covered by the uploaded policy document.
+```
+ 
+This prevents unrelated policy names from being incorrectly matched to existing policy content.
+ 
+---
+## Deterministic Retrieval
+ 
+The core factual retrieval pipeline performs:
  
 ```text
 Policy Text
 |
+v
 Sentence Chunking
 |
+v
 Tokenization
 |
-TF-IDF Weighting
+v
+TF-IDF-Style Weighting
 |
+v
 Cosine Similarity
 |
+v
 Best Candidate
 |
+v
 Relevance Guardrail
 |
-Answer or Rejection
++---- Match ----> Policy Answer
+|
++-- No Match ---> Rejection
 ```
+ 
+Explicit policy-name questions additionally use policy-section detection so that complete matching policy sections can be returned.
  
 This approach provides:
  
@@ -94,17 +138,20 @@ This approach provides:
 - Transparent scoring
 - Lightweight execution
 - No external LLM dependency for core retrieval
+- Predictable behavior
 - Easier debugging and evaluation
  
-### Relevance Guardrail
+---
+
+## Relevance Guardrail
  
-PolicyLens-Mini applies a relevance threshold of:
+PolicyLens-Mini applies a factual retrieval relevance threshold of:
  
 ```text
 0.20
 ```
  
-If sufficient supporting information is found:
+When sufficient supporting information is found, an API response can contain:
  
 ```json
 {
@@ -114,7 +161,7 @@ If sufficient supporting information is found:
 }
 ```
  
-If sufficient evidence is not found:
+When sufficient evidence is not found:
  
 ```json
 {
@@ -124,23 +171,22 @@ If sufficient evidence is not found:
 }
 ```
  
-Markdown headings are excluded from answer candidates.
+For an explicit policy name that does not exist in the uploaded document:
+ 
+```json
+{
+"answer": "This question is not covered by the uploaded policy document.",
+"score": 0.0,
+"matched": false
+}
+```
+ 
+Markdown headings are excluded from normal factual answer candidates.
  
 The retrieval system also uses limited deterministic query expansion to reduce selected vocabulary mismatches.
  
 ---
- 
-## Technology Stack
- 
-### Frontend
- 
-- Next.js
-- React
-- TypeScript
-- CSS
- 
-### Backend
- 
+
 - Python
 - FastAPI
 - Uvicorn
@@ -150,11 +196,12 @@ The retrieval system also uses limited deterministic query expansion to reduce s
 ### Retrieval
  
 - Sentence-level chunking
+- Policy-section extraction
 - Tokenization
 - TF-IDF-style weighting
 - Cosine similarity
 - Deterministic query expansion
-- Relevance guardrail
+- Relevance guardrails
  
 ### Engineering and Deployment
  
@@ -162,6 +209,7 @@ The retrieval system also uses limited deterministic query expansion to reduce s
 - GitHub
 - GitHub Actions
 - Render
+- Vercel
 - Automated evaluation
 - Agile development practices
  
@@ -183,7 +231,7 @@ POST /ask
 GET /health
 ```
  
-Example:
+Example response:
  
 ```json
 {
@@ -197,10 +245,10 @@ Example:
 POST /upload
 ```
  
-Accepts a PDF and returns the filename and extracted text.
+Accepts a PDF document and returns the filename and extracted text.
  
 ### Ask
- 
+
 ```text
 POST /ask
 ```
@@ -238,9 +286,11 @@ FastAPI Backend
 |
 +--> PDF Extraction
 |
++--> Policy Section Detection
+|
 +--> Sentence Chunking
 |
-+--> TF-IDF Retrieval
++--> TF-IDF-Style Retrieval
 |
 +--> Cosine Similarity
 |
@@ -250,9 +300,6 @@ FastAPI Backend
 |
 +---- No Match -----> Rejection
 ```
- 
-This separation keeps presentation, API routing, document processing, retrieval, and evaluation independently maintainable.
- 
 Additional architecture documentation:
  
 ```text
@@ -298,6 +345,7 @@ PolicyLens-Mini/
 | `-- evaluation_summary.md
 |
 |-- demo/
+| |-- PolicyLens_Mini_Complete_Policy_Handbook.pdf
 | |-- screenshots/
 | |-- demo_script.md
 | `-- demo_steps.md
@@ -313,7 +361,7 @@ PolicyLens-Mini/
 ```
  
 ---
- 
+
 # Local Development
  
 ## Clone the Repository
@@ -344,7 +392,7 @@ Interactive API documentation:
 ```text
 http://127.0.0.1:8000/docs
 ```
- 
+
 ## Frontend
  
 Open another terminal:
@@ -385,8 +433,8 @@ The controlled evaluation contains:
 20 test cases
 4 policy documents
 ```
- 
-The policies used are:
+
+The evaluated policy categories are:
  
 - Paid Time Off
 - Information Security
@@ -406,7 +454,7 @@ Correct: 15/20
 Accuracy: 75.00%
 ```
  
-Failures included:
+Observed failure categories included:
  
 - Policy headings returned as answers
 - Unsupported questions incorrectly matched
@@ -414,14 +462,95 @@ Failures included:
 - Incorrect selection between related policy sentences
  
 ---
- 
 ## Retrieval Improvements
  
 Evaluation findings led to several backend improvements:
  
-- Markdown headings excluded from answers
+- Markdown headings excluded from factual answers
 - Relevance threshold increased from `0.10` to `0.20`
 - Limited deterministic query expansion added
 - Unsupported-question rejection improved
+- Explicit unsupported policy-name detection added
+- Complete policy-section retrieval added for matching policy-name questions
  
-The same 20 cases were
+---
+ 
+## Final Evaluation
+ 
+The same controlled 20-case evaluation suite was rerun after the retrieval improvements.
+ 
+Final result:
+ 
+```text
+Correct: 20/20
+Accuracy: 100.00%
+```
+The complete machine-readable results are available at:
+ 
+```text
+evaluation/eval_results.json
+```
+ 
+---
+ 
+## Deployment
+ 
+PolicyLens-Mini uses a separated cloud deployment architecture:
+ 
+```text
+Browser
+|
+v
+Vercel
+Next.js Frontend
+|
+v
+Render
+FastAPI Backend
+```
+ 
+### Production Application
+ 
+https://policylens-mini.vercel.app
+ 
+---
+ 
+## Examiner Testing
+
+For reproducible testing:
+ 
+1. Open this repository.
+2. Download:
+`demo/PolicyLens_Mini_Complete_Policy_Handbook.pdf`
+3. Open:
+https://policylens-mini.vercel.app
+4. Upload the handbook.
+5. Ask:
+`What is Attendance Policy?`
+6. Confirm that PolicyLens returns the Attendance Policy content.
+7. Ask:
+`What is Cook Policy?`
+8. Confirm that PolicyLens rejects the unsupported policy question.
+ 
+---
+ 
+## Supporting Documentation
+ 
+Additional project documentation includes:
+ 
+- `ai-tooling.md`
+- `design-and-evaluation.md`
+- `evaluation_set.md`
+- `evaluation/evaluation.md`
+- `evaluation/evaluation_summary.md`
+- `demo/demo_script.md`
+- `demo/demo_steps.md`
+- `architecture/architecture_diagram.png`
+ 
+---
+ 
+## Conclusion
+ 
+PolicyLens-Mini demonstrates an end-to-end software engineering workflow for deterministic policy-document retrieval.
+ 
+The project integrates PDF ingestion, structured text processing, deterministic retrieval, relevance guardrails, automated evaluation, frontend-backend integration, Git-based development, and cloud deployment into a reproducible capstone application.
