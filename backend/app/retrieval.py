@@ -34,19 +34,27 @@ UNSUPPORTED_QUESTION_RESPONSE = (
 
 def tokenize(text):
     words = re.findall(r"[a-z0-9]+", (text or "").lower())
-
     tokens = [
         word
         for word in words
         if word not in STOP_WORDS and len(word) >= 2
     ]
-
     expanded = list(tokens)
-
     for token in tokens:
         expanded.extend(QUERY_EXPANSIONS.get(token, set()))
-
     return expanded
+
+
+def heading_tokens(text):
+    """Tokens for exact policy-title matching, without query expansion."""
+    words = re.findall(r"[a-z0-9]+", (text or "").lower())
+    return {
+        word
+        for word in words
+        if word not in STOP_WORDS
+        and word != "policy"
+        and len(word) >= 2
+    }
 
 
 def chunk_policy_text(text):
@@ -56,29 +64,20 @@ def chunk_policy_text(text):
         .replace("\r", "\n")
         .strip()
     )
-
     if not text:
         return []
 
     chunks = []
-
     for line in text.split("\n"):
         line = re.sub(r"\s+", " ", line).strip()
-
-        if not line:
-            continue
-
-        if line.startswith("#"):
+        if not line or line.startswith("#"):
             continue
 
         sentences = re.split(r"(?<=[.!?])\s+", line)
-
         for sentence in sentences:
             sentence = sentence.strip()
-
             if len(sentence) >= 20:
                 chunks.append(sentence)
-
     return chunks
 
 
@@ -96,21 +95,17 @@ def extract_policy_sections(text):
 
     def save_section():
         nonlocal current_heading, current_content
-
         if current_heading and current_content:
             content = " ".join(current_content).strip()
-
             if content:
                 sections.append({
                     "heading": current_heading,
                     "content": content,
                 })
-
         current_content = []
 
     for raw_line in text.split("\n"):
         line = re.sub(r"\s+", " ", raw_line).strip()
-
         if not line:
             continue
 
@@ -125,11 +120,7 @@ def extract_policy_sections(text):
             flags=re.IGNORECASE,
         ):
             save_section()
-            current_heading = re.sub(
-                r"^\d+\.\s*",
-                "",
-                line,
-            ).strip()
+            current_heading = re.sub(r"^\d+\.\s*", "", line).strip()
             continue
 
         if current_heading:
@@ -141,12 +132,10 @@ def extract_policy_sections(text):
 
 def calculate_idf(documents):
     total = len(documents)
-
     if total == 0:
         return {}
 
     frequencies = Counter()
-
     for document in documents:
         frequencies.update(set(document))
 
@@ -162,7 +151,6 @@ def make_vector(tokens, idf):
 
     counts = Counter(tokens)
     total = len(tokens)
-
     return {
         term: (count / total) * idf[term]
         for term, count in counts.items()
@@ -175,7 +163,6 @@ def similarity(vector_a, vector_b):
         return 0.0
 
     common_terms = set(vector_a).intersection(vector_b)
-
     if not common_terms:
         return 0.0
 
@@ -183,18 +170,15 @@ def similarity(vector_a, vector_b):
         vector_a[term] * vector_b[term]
         for term in common_terms
     )
-
     magnitude_a = math.sqrt(
         sum(value * value for value in vector_a.values())
     )
-
     magnitude_b = math.sqrt(
         sum(value * value for value in vector_b.values())
     )
 
     if magnitude_a == 0 or magnitude_b == 0:
         return 0.0
-
     return dot_product / (magnitude_a * magnitude_b)
 
 
@@ -216,13 +200,40 @@ def retrieve_answer(question, text, threshold=0.20):
             "matched": False,
         }
 
-    # Handle Code of Conduct explicitly because its title does not end in "Policy".
+    sections = extract_policy_sections(text)
+
+    # Exact Code of Conduct title match.
     if re.fullmatch(
         r"(?:what\s+is\s+)?(?:the\s+)?code\s+of\s+conduct[?.!]*",
         question.lower(),
     ):
-        for section in extract_policy_sections(text):
+        for section in sections:
             if section["heading"].strip().lower() == "code of conduct":
+                return {
+                    "answer": section["content"],
+                    "score": 1.0,
+                    "matched": True,
+                }
+        return {
+            "answer": UNSUPPORTED_QUESTION_RESPONSE,
+            "score": 0.0,
+            "matched": False,
+        }
+
+    # Exact policy-title matching prevents "Reimbursement Policy"
+    # from matching "Expense Reimbursement Policy".
+    policy_name_match = re.fullmatch(
+        r"(?:what\s+is\s+)?(?:the\s+)?(.+?)\s+policy[?.!]*",
+        question.lower(),
+    )
+
+    if policy_name_match:
+        requested_name = policy_name_match.group(1).strip()
+        requested_title_tokens = heading_tokens(requested_name)
+
+        for section in sections:
+            section_title_tokens = heading_tokens(section["heading"])
+            if requested_title_tokens and requested_title_tokens == section_title_tokens:
                 return {
                     "answer": section["content"],
                     "score": 1.0,
@@ -235,50 +246,7 @@ def retrieve_answer(question, text, threshold=0.20):
             "matched": False,
         }
 
-    policy_name_match = re.fullmatch(
-        r"(?:what\s+is\s+)?(?:the\s+)?(.+?)\s+policy[?.!]*",
-        question.lower(),
-    )
-
-    if policy_name_match:
-        requested_name = policy_name_match.group(1).strip()
-        requested_tokens = set(tokenize(requested_name))
-        sections = extract_policy_sections(text)
-
-        best_section = None
-        best_overlap = 0
-
-        for section in sections:
-            heading_tokens = set(tokenize(section["heading"]))
-            heading_tokens.discard("policy")
-
-            overlap = len(
-                requested_tokens.intersection(heading_tokens)
-            )
-
-            if overlap > best_overlap:
-                best_overlap = overlap
-                best_section = section
-
-        if (
-            requested_tokens
-            and best_section
-            and best_overlap == len(requested_tokens)
-        ):
-            return {
-                "answer": best_section["content"],
-                "score": 1.0,
-                "matched": True,
-            }
-
-        return {
-            "answer": UNSUPPORTED_QUESTION_RESPONSE,
-            "score": 0.0,
-            "matched": False,
-        }
-
     chunks = chunk_policy_text(text)
-
     if not chunks:
         return {
             "answer": "No readable policy information was found.",
@@ -298,7 +266,6 @@ def retrieve_answer(question, text, threshold=0.20):
 
     idf = calculate_idf(documents + [question_tokens])
     question_vector = make_vector(question_tokens, idf)
-
     scores = []
 
     for document, chunk in zip(documents, chunks):
