@@ -1,11 +1,11 @@
-# Anti‑Harassment Policy
+# Anti-Harassment Policy
 
-## Zero Tolerance
-Harassment of any kind is prohibited.
+The company is committed to maintaining a workplace free from harassment.
 
-## Reporting
-Employees must report incidents to HR or a manager.  
-Reports are investigated promptly and confidentially.
+Harassment based on race, gender, religion, disability, or any protected characteristic is strictly prohibited.
 
-## Retaliation
-Retaliation against individuals who report harassment is not allowed.
+Employees must report incidents immediately to HR or a manager.
+
+All reports will be investigated promptly and confidentially.
+
+Retaliation against individuals who report harassment is prohibited.

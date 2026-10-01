@@ -1,13 +1,11 @@
 # Data Protection Policy
 
-## Data Handling
-Confidential data must be stored in approved systems only.
+Employees must protect company data from unauthorized access, disclosure, or loss.
 
-## Security Requirements
-Employees must avoid:
-- Personal email  
-- Unencrypted channels  
-- Unauthorized storage  
+Confidential information must be stored only in approved systems.
 
-## Incident Reporting
-Suspected data breaches must be reported immediately.
+Sensitive data should never be shared through personal email or unencrypted channels.
+
+Employees must follow all data retention and deletion guidelines.
+
+Any suspected data breach must be reported immediately.

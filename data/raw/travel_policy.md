@@ -1,16 +1,11 @@
 # Travel Policy
 
-## Approval
-All business travel requires manager approval before booking.
+Business travel must be approved by a manager before any reservations are made.
 
-## Reimbursable Items
-The company reimburses:
-- Airfare  
-- Lodging  
-- Meals  
-- Ground transportation  
+Employees should use cost-effective transportation and lodging options.
 
-Receipts must be submitted within 14 days.
+Receipts must be submitted within 14 days of completing travel.
 
-## Non‑Reimbursable
-Personal travel costs are not reimbursed.
+The company reimburses airfare, lodging, meals, and ground transportation when used for business purposes.
+
+Personal travel expenses are not reimbursable.

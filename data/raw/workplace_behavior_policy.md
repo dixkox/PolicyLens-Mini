@@ -1,10 +1,7 @@
 # Workplace Behavior Policy
 
-## Expectations
-Employees must behave professionally and respectfully.
+Employees are expected to behave professionally and respectfully at all times.
 
-## Prohibited Behavior
-Bullying, intimidation, and disruptive conduct are not allowed.
+Bullying, intimidation, or disruptive behavior is not tolerated.
 
-## Conflict Resolution
-Employees should resolve conflicts constructively and involve managers when necessary.
+Employees should resolve conflicts constructively and seek manager support when needed.

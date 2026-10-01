@@ -1,14 +1,7 @@
 # HR General Policy
 
-## Responsibilities
-HR manages:
-- Employee relations  
-- Onboarding  
-- Performance reviews  
-- Compliance  
+The HR department oversees employee relations, onboarding, performance reviews, and workplace compliance.
 
-## Employee Support
-Employees may contact HR for policy or benefits questions.
+Employees should contact HR for questions regarding policies, benefits, or workplace concerns.
 
-## Records
-HR maintains personnel records and ensures regulatory compliance.
+HR maintains all personnel records and ensures compliance with labor regulations.

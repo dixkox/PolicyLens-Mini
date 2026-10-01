@@ -1,10 +1,11 @@
 # Reimbursement Policy
 
-## Requirements
-Reimbursement requests must include itemized receipts.
+Employees may request reimbursement for approved business expenses.
 
-## Submission Timeline
-Requests must be submitted within 14 days.
+All reimbursement claims must include itemized receipts.
 
-## Restrictions
-Personal items and luxury purchases are not reimbursed.
+Requests must be submitted within 14 days of the expense.
+
+Managers review all claims before payment is issued.
+
+Luxury purchases or personal items are not reimbursable.

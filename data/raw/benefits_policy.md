@@ -1,21 +1,11 @@
 # Benefits Policy
 
-The company provides a comprehensive benefits package to support employee well‑being.
+The company provides a comprehensive benefits package to support employee well-being.
 
-## Health & Wellness
-Eligible employees receive:
-- Health insurance  
-- Dental coverage  
-- Vision plans  
-Starting after 90 days of employment.
+Eligible employees receive health insurance, dental coverage, and vision plans beginning after 90 days of employment.
 
-## Retirement
-The company offers a retirement savings plan with employer matching.
+The company also offers a retirement savings plan with employer matching.
 
-## Voluntary Benefits
-Employees may enroll in:
-- Life insurance  
-- Disability coverage  
-- Wellness programs  
+Additional voluntary benefits include life insurance, disability coverage, and wellness programs.
 
-More details are available in the HR portal.
+Employees may review detailed benefit summaries through the HR portal.
